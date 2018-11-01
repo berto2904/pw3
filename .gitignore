@@ -1,11 +1,11 @@
-﻿################################################################################
-# Este archivo .gitignore ha sido creado automáticamente por Microsoft(R) Visual Studio.
-################################################################################
+.gitignore
 
 /.vs/ProjectSettings.json
 *.json
 *.vs
 */.vs/*
+*TPModel.Designer.cs
+*.cs.dll
 
 ###################
 # compiled source #
