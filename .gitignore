@@ -5,6 +5,7 @@
 /.vs/ProjectSettings.json
 *.json
 *.vs
+/.vs*
 
 ###################
 # compiled source #
