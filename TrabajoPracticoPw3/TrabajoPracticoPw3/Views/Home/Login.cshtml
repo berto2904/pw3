@@ -1,0 +1,19 @@
+﻿@model TrabajoPracticoPw3.Models.Usuario
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Iniciar Sesion</h2>
+
+    @using (Html.BeginForm())
+    {
+    <div class="form-group">
+        <label for="Email">Email</label>
+        @Html.TextBoxFor(u=>u.Email, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        @Html.PasswordFor(u=>u.Password, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Ingresar</button>
+    }
