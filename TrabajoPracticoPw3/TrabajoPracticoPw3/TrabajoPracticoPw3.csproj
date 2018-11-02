@@ -187,6 +187,8 @@
     <Compile Include="Models\Usuario.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Services\HomeService.cs" />
+    <Compile Include="Services\PedidoService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

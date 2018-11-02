@@ -29,8 +29,12 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
-        public ActionResult Lista()
+        public ActionResult Lista(int idUsuario)
         {
+            if(Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
