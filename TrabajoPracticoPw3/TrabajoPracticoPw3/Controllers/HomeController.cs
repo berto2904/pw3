@@ -50,7 +50,7 @@ namespace TrabajoPracticoPw3.Controllers
         {
             FormsAuthentication.SignOut();
             Session.Clear();
-            return View("Login");
+            return RedirectToAction("Login");
         }
     }
 }
