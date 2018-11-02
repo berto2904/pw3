@@ -256,3 +256,4 @@ _Pvt_Extensions
 *.diagram
 TPModel.Designer.cs
 Web.config
+*dll
