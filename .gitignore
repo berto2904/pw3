@@ -26,7 +26,7 @@ js/app.min.js
 x64/
 x86/
 bld/
-#[Bb]in/
+[Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -254,3 +254,5 @@ _Pvt_Extensions
 .idea/
 *.sln.iml
 *.diagram
+TPModel.Designer.cs
+Web.config
