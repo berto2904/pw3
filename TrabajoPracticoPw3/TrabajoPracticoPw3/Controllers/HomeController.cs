@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using TrabajoPracticoPw3.Models;
 using TrabajoPracticoPw3.Services;
 
@@ -43,6 +44,13 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Error()
         {
             return View();
+        }
+
+        public ActionResult Logout(Usuario usuario)
+        {
+            FormsAuthentication.SignOut();
+            Session.Clear();
+            return View("Login");
         }
     }
 }
