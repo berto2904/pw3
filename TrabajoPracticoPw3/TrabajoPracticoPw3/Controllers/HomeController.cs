@@ -37,7 +37,12 @@ namespace TrabajoPracticoPw3.Controllers
             if (usuarioEncontrado != null)
             {
                 Session["usuario"] = usuarioEncontrado.IdUsuario;
-                return RedirectToAction("Lista","Pedidos",new { idUsuario = Session["usuario"] });
+                return RedirectToAction("Lista","Pedidos");
+                //return RedirectToAction("Lista","Pedidos",new { idUsuario = Session["usuario"] });
+            }
+            else
+            {
+                ViewBag.mensaje = "Usuario invalido";
             }
             return View();
         }

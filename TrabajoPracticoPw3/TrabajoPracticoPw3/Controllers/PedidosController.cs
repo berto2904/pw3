@@ -29,7 +29,7 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
-        public ActionResult Lista(int idUsuario)
+        public ActionResult Lista()
         {
             if(Session["usuario"] == null)
             {
