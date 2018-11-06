@@ -1,7 +1,7 @@
 ﻿@using TrabajoPracticoPw3.Models
-
 @{
     ViewBag.Title = "Lista";
+    Layout = "~/Views/Shared/UsuarioLayout.cshtml";
 }
 
 <h2>Bienvenido @Model.Email</h2>
@@ -22,26 +22,26 @@
     <tbody>
         @foreach (Pedido pedido in ViewBag.ListaPedidos)
         {
-        <tr>
-            <td>@pedido.FechaCreacion</td>
-            <td>@pedido.NombreNegocio</td>
-            <td>@pedido.EstadoPedido.Nombre</td>
-            @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
-            {
-                <td>Responsable</td>
-            }
-            else
-            {
-                <td>Invitado</td>
-            }
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-            
-         }
+            <tr>
+                <td>@pedido.FechaCreacion</td>
+                <td>@pedido.NombreNegocio</td>
+                <td>@pedido.EstadoPedido.Nombre</td>
+                @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
+                {
+                    <td>Responsable</td>
+                }
+                else
+                {
+                    <td>Invitado</td>
+                }
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
 
-        </tbody>
+        }
+
+    </tbody>
 </table>
 
 <div class="btn-group" role="group" aria-label="Basic example">

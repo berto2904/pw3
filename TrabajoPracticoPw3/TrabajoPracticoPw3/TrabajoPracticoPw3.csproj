@@ -239,7 +239,7 @@
       <DependentUpon>TPModel.edmx</DependentUpon>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\BaseLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
@@ -254,6 +254,9 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Pedidos\Lista.cshtml" />
+    <Content Include="Views\Shared\UsuarioLayout.cshtml" />
+    <Content Include="Views\Shared\AnonimoLayout.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

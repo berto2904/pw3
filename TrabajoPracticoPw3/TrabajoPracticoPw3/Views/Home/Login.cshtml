@@ -1,6 +1,7 @@
 ﻿@model TrabajoPracticoPw3.Models.Usuario
 @{
     ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/AnonimoLayout.cshtml";
 }
 
 <h2>Iniciar Sesion</h2>
@@ -15,7 +16,7 @@
         <label for="password">Password</label>
         @Html.PasswordFor(u => u.Password, new { @class = "form-control" })
     </div>
-<button type="submit" class="btn btn-primary">Ingresar</button>
+    <button type="submit" class="btn btn-primary">Ingresar</button>
 }
 
 <span>@ViewBag.mensaje</span>
