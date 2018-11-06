@@ -23,7 +23,7 @@ namespace TrabajoPracticoPw3.Controllers
         {
             if(Session["usuario"] != null)
             {
-                return RedirectToAction("Lista", "Pedidos", new { idUsuario = Session["usuario"] });
+                return RedirectToAction("Lista", "Pedidos");
             }
             return View();
 

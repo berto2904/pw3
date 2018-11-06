@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TrabajoPracticoPw3.Models;
+using TrabajoPracticoPw3.Services;
 
 namespace TrabajoPracticoPw3.Controllers
 {
     public class PedidosController : Controller
     {
+        PedidoService ps = new PedidoService();
         // GET: Pedidos
         public ActionResult Index()
         {
@@ -35,7 +38,10 @@ namespace TrabajoPracticoPw3.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            return View();
+            int idUsuario = Convert.ToInt32(Session["usuario"]);
+            Usuario usuario = ps.BuscarUsuarioById(idUsuario);
+            ViewBag.ListaPedidos = ps.ListarPedidosByIdUsuario(idUsuario);
+            return View(usuario);
         }
 
         public ActionResult Editar()

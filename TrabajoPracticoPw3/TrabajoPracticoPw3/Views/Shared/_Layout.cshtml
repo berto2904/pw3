@@ -29,14 +29,25 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#">Services</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Home/Login">Login</a>
-                    </li>
+                    @*if (!Request.IsAuthenticated)*@
+                    @if (ViewContext.RouteData.GetRequiredString("controller") == "Home")
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Login">Iniciar Sesion</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Home/Logout">Cerrar Sesion</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <p>Nombre de Usuario</p>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
