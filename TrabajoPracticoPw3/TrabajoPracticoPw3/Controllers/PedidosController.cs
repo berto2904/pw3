@@ -52,8 +52,7 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
-        [HttpGet]
-        public ActionResult Elegir(int id)
+       public ActionResult Elegir(int id)
         {
             ValidarUsuarioSesion();
             if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
