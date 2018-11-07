@@ -14,25 +14,31 @@ namespace TrabajoPracticoPw3.Services
             Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == idUsuario);
             return usuarioEncontrado;
         }
-        public List<Pedido> ListarPedidosByIdUsuario(int idUsuario)
-        {
-     
-            var query =
+
+        public List<Pedido> ListarPedidosByUsuario(Usuario usuario)
+        {  var query =
                (from p in ctx.Pedido
                join ep in ctx.EstadoPedido on p.IdEstadoPedido equals ep.IdEstadoPedido
                join ip in ctx.InvitacionPedido on p.IdPedido equals ip.IdPedido
-               where ip.IdUsuario == idUsuario
-               select
+               where ip.IdUsuario == usuario.IdUsuario
+                orderby p.FechaCreacion
+                select
                     p).ToList();
-
-
-
-
-            /*from Pedido p
-                Join EstadoPedido ep on p.IdEstadoPedido = ep.IdEstadoPedido
-                Join InvitacionPedido ip on ip.IdPedido = p.IdPedido
-                where ip.IdUsuario = 1*/
             return query;
+        }
+
+        public Boolean PedidoUsuarioResponsableIsTrue(int idPedido, Usuario usuario)
+        {
+            var query = (from p in ctx.Pedido
+                         where p.IdUsuarioResponsable == usuario.IdUsuario &&
+                                p.IdPedido == idPedido
+                         select p).ToList();
+
+            if (query.Count > 0)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -46,8 +46,10 @@ namespace TrabajoPracticoPw3.Controllers
             }
             return View();
         }
+
         public ActionResult Error()
         {
+            ViewBag.Mensaje = TempData["mensaje"];
             return View();
         }
 

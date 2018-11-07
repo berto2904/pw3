@@ -11,6 +11,8 @@ namespace TrabajoPracticoPw3.Controllers
     public class PedidosController : Controller
     {
         PedidoService ps = new PedidoService();
+        static Usuario usuarioLoguedado = new Usuario();
+
         // GET: Pedidos
         public ActionResult Index()
         {
@@ -34,14 +36,10 @@ namespace TrabajoPracticoPw3.Controllers
 
         public ActionResult Lista()
         {
-            if(Session["usuario"] == null)
-            {
-                return RedirectToAction("Login", "Home");
-            }
-            int idUsuario = Convert.ToInt32(Session["usuario"]);
-            Usuario usuario = ps.BuscarUsuarioById(idUsuario);
-            ViewBag.ListaPedidos = ps.ListarPedidosByIdUsuario(idUsuario);
-            return View(usuario);
+            ValidarUsuarioSesion();
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+            ViewBag.ListaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
+            return View(usuarioLoguedado);
         }
 
         public ActionResult Editar()
@@ -54,14 +52,30 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
-        public ActionResult Elegir()
+        [HttpGet]
+        public ActionResult Elegir(int id)
         {
+            ValidarUsuarioSesion();
+            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error","Home");
+            }
             return View();
         }
 
         public ActionResult Detalle()
         {
             return View();
+        }
+
+        public ActionResult ValidarUsuarioSesion()
+        {
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return null;
         }
 
     }
