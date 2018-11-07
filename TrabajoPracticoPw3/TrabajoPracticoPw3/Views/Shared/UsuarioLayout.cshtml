@@ -1,0 +1,26 @@
+﻿@{
+    Layout = "~/Views/Shared/BaseLayout.cshtml";
+}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        @Html.ActionLink("3Empanadas", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/Home/Logout">Cerrar Sesion</a>
+                </li>
+
+                <li class="nav-item active">
+                    <p>Nombre de Usuario</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+@RenderBody()
