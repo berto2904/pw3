@@ -258,6 +258,7 @@
     <Content Include="Views\Shared\AnonimoLayout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\Pedidos\Elegir.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
