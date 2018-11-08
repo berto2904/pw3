@@ -40,5 +40,18 @@ namespace TrabajoPracticoPw3.Services
             }
             return false;
         }
+
+        public Boolean InvitacionPedidoUsuarioIsTrue(int idPedido, Usuario usuario)
+        {
+            var query = (from ip in ctx.InvitacionPedido
+                         where ip.IdUsuario == usuario.IdUsuario && ip.IdPedido == idPedido
+                         select ip).ToList();
+
+            if(query.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -42,24 +42,37 @@ namespace TrabajoPracticoPw3.Controllers
             return View(usuarioLoguedado);
         }
 
-        public ActionResult Editar()
+        public ActionResult Editar(int id)
         {
+            ValidarUsuarioSesion();
+            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
             return View();
         }
 
-        public ActionResult Eliminar()
+        public ActionResult Eliminar(int id)
         {
+            ValidarUsuarioSesion();
+            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
             return View();
         }
 
        public ActionResult Elegir(int id)
         {
             ValidarUsuarioSesion();
-            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            if (!ps.InvitacionPedidoUsuarioIsTrue(id, usuarioLoguedado))
             {
                 TempData["mensaje"] = "Acceso invalido";
                 return RedirectToAction("Error","Home");
             }
+
             return View();
         }
 
