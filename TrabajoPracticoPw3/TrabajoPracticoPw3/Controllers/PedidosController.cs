@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using TrabajoPracticoPw3.Models;
@@ -19,13 +20,23 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult Iniciar()
         {
+            ValidarUsuarioSesion();
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Iniciar(Pedido pedido)
+        {
+            ValidarUsuarioSesion();
+
             return View();
         }
 
         public ActionResult Iniciar(int id)
         {
+            ValidarUsuarioSesion();
             return View();
         }
 
@@ -37,20 +48,40 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Lista()
         {
             ValidarUsuarioSesion();
-            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
-            ViewBag.ListaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
-            return View(usuarioLoguedado);
+            try
+            {
+                usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+                ViewBag.ListaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
+                return View(usuarioLoguedado);
+            }
+            catch (TargetException)
+            {
+
+                TempData["mensaje"] = "Debes <a href='/Home/Login'>Iniciar Sesion</a>";
+                return RedirectToAction("Error", "Home");
+            }
         }
 
         public ActionResult Editar(int id)
         {
             ValidarUsuarioSesion();
-            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            try
             {
-                TempData["mensaje"] = "Acceso invalido";
+                if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+                {
+                    TempData["mensaje"] = "Acceso invalido";
+                    return RedirectToAction("Error", "Home");
+                }
+
+                return View();
+
+            }
+            catch (TargetException)
+            {
+                TempData["mensaje"] = "Debes Iniciar Sesion";
                 return RedirectToAction("Error", "Home");
             }
-            return View();
+
         }
 
         public ActionResult Eliminar(int id)
