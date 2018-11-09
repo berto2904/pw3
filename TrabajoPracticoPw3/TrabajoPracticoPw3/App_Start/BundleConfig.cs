@@ -29,10 +29,27 @@ namespace TrabajoPracticoPw3.App_Start
                 "~/Content/templateEmpanada/css/half-slider.css"
                 ));
 
-            //bundles.Add(new ScriptBundle("~/bundles/Site").Include(
-            //          "~/Scripts/bootstrap.js",
-            //          "~/Scripts/respond.js"));
-            
+            bundles.Add(new ScriptBundle("~/bundles/fastSearchSelect").Include(
+                       "~/Content/fastsearch-master/dist/fastsearch.min.js",
+                       "~/Content/fastselect-master/dist/fastselect.js",
+                       "~/Content/js/Iniciar.js"));
+
+            bundles.Add(new StyleBundle("~/Content/fastselect").Include(
+                "~/Content/fastselect-master/dist/fastselect.css"
+                ));
+
+            bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
+                 "~/Content/font-awesome.min.css"
+                ));
+
+               
+           
+
+
+               //bundles.Add(new ScriptBundle("~/bundles/Site").Include(
+               //          "~/Scripts/bootstrap.js",
+               //          "~/Scripts/respond.js"));
+
             //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
             //          "~/Scripts/bootstrap.js",
             //          "~/Scripts/respond.js"));

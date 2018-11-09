@@ -23,7 +23,12 @@ namespace TrabajoPracticoPw3.Controllers
         [HttpGet]
         public ActionResult Iniciar()
         {
-            ValidarUsuarioSesion();
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            ViewBag.ListaDeGustos = new MultiSelectList(ps.ObtenerGustoDeEmpanadasList(), "IdGustoEmpanada", "Nombre");
+            ViewBag.ListaDeUsuarios = new MultiSelectList(ps.ObtenerUsuarioList(), "IdUsuario", "Email");
             return View();
         }
         [HttpPost]
@@ -36,18 +41,21 @@ namespace TrabajoPracticoPw3.Controllers
 
         public ActionResult Iniciar(int id)
         {
-            ValidarUsuarioSesion();
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
         public ActionResult Iniciado(int id)
         {
+
             return View();
         }
 
         public ActionResult Lista()
         {
-            ValidarUsuarioSesion();
             try
             {
                 usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
@@ -56,37 +64,25 @@ namespace TrabajoPracticoPw3.Controllers
             }
             catch (TargetException)
             {
-
-                TempData["mensaje"] = "Debes <a href='/Home/Login'>Iniciar Sesion</a>";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Login", "Home");
             }
         }
 
         public ActionResult Editar(int id)
         {
-            ValidarUsuarioSesion();
-            try
+            //ValidarUsuarioSesion();
+     
+            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
             {
-                if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
-                {
-                    TempData["mensaje"] = "Acceso invalido";
-                    return RedirectToAction("Error", "Home");
-                }
-
-                return View();
-
-            }
-            catch (TargetException)
-            {
-                TempData["mensaje"] = "Debes Iniciar Sesion";
+                TempData["mensaje"] = "Acceso invalido";
                 return RedirectToAction("Error", "Home");
             }
 
+            return View();
         }
 
         public ActionResult Eliminar(int id)
         {
-            ValidarUsuarioSesion();
             if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
             {
                 TempData["mensaje"] = "Acceso invalido";
@@ -97,7 +93,6 @@ namespace TrabajoPracticoPw3.Controllers
 
        public ActionResult Elegir(int id)
         {
-            ValidarUsuarioSesion();
             if (!ps.InvitacionPedidoUsuarioIsTrue(id, usuarioLoguedado))
             {
                 TempData["mensaje"] = "Acceso invalido";

@@ -117,6 +117,33 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\fastsearch-master\dist\fastsearch.js" />
+    <Content Include="Content\fastsearch-master\dist\fastsearch.min.js" />
+    <Content Include="Content\fastsearch-master\Gruntfile.js" />
+    <Content Include="Content\fastsearch-master\src\fastsearch.js" />
+    <Content Include="Content\fastselect-master\demo\index.html" />
+    <Content Include="Content\fastselect-master\demo\sections\about.html" />
+    <Content Include="Content\fastselect-master\demo\sections\apiAndOptions.html" />
+    <Content Include="Content\fastselect-master\demo\sections\examples.html" />
+    <Content Include="Content\fastselect-master\demo\sections\installation.html" />
+    <Content Include="Content\fastselect-master\demo\snippets\attireAssets.html" />
+    <Content Include="Content\fastselect-master\demo\snippets\attireFooter.html" />
+    <Content Include="Content\fastselect-master\demo\snippets\author.html" />
+    <Content Include="Content\fastselect-master\demo\snippets\githubRibbon.html" />
+    <Content Include="Content\fastselect-master\demo\snippets\googleAnalytics.html" />
+    <Content Include="Content\fastselect-master\demo\snippets\pageMeta.html" />
+    <Content Include="Content\fastselect-master\dist\fastselect.css" />
+    <Content Include="Content\fastselect-master\dist\fastselect.js" />
+    <Content Include="Content\fastselect-master\dist\fastselect.min.css" />
+    <Content Include="Content\fastselect-master\dist\fastselect.min.js" />
+    <Content Include="Content\fastselect-master\dist\fastselect.standalone.js" />
+    <Content Include="Content\fastselect-master\dist\fastselect.standalone.min.js" />
+    <Content Include="Content\fastselect-master\Gruntfile.js" />
+    <Content Include="Content\fastselect-master\index.html" />
+    <Content Include="Content\fastselect-master\src\fastselect.js" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\js\Iniciar.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\templateEmpanada\css\half-slider.css" />
     <Content Include="Content\templateEmpanada\vendor\bootstrap\css\bootstrap-grid.css" />
@@ -133,6 +160,7 @@
     <Content Include="Content\templateEmpanada\vendor\jquery\jquery.min.js" />
     <Content Include="Content\templateEmpanada\vendor\jquery\jquery.slim.js" />
     <Content Include="Content\templateEmpanada\vendor\jquery\jquery.slim.min.js" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
@@ -164,11 +192,34 @@
     <Content Include="Content\templateEmpanada\vendor\bootstrap\js\bootstrap.min.js.map" />
     <Content Include="Content\templateEmpanada\vendor\jquery\jquery.min.map" />
     <Content Include="Content\templateEmpanada\vendor\jquery\jquery.slim.min.map" />
-    <None Include="Scripts\jquery-3.0.0-vsdoc.js" />
-    <Content Include="Scripts\jquery-3.0.0.js" />
-    <Content Include="Scripts\jquery-3.0.0.min.js" />
-    <Content Include="Scripts\jquery-3.0.0.slim.js" />
-    <Content Include="Scripts\jquery-3.0.0.slim.min.js" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\fastsearch-master\.gitignore" />
+    <Content Include="Content\fastsearch-master\.jscsrc" />
+    <Content Include="Content\fastsearch-master\.jshintrc" />
+    <Content Include="Content\fastsearch-master\bower.json" />
+    <Content Include="Content\fastsearch-master\LICENSE" />
+    <Content Include="Content\fastsearch-master\package.json" />
+    <Content Include="Content\fastsearch-master\README.md" />
+    <Content Include="Content\fastselect-master\.gitignore" />
+    <Content Include="Content\fastselect-master\.jscsrc" />
+    <Content Include="Content\fastselect-master\.jshintrc" />
+    <Content Include="Content\fastselect-master\bower.json" />
+    <Content Include="Content\fastselect-master\demo\data.json" />
+    <Content Include="Content\fastselect-master\LICENSE" />
+    <Content Include="Content\fastselect-master\package.json" />
+    <Content Include="Content\fastselect-master\README.md" />
+    <Content Include="Content\fastselect-master\src\fastselect.scss" />
+    <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.3.1.js" />
+    <Content Include="Scripts\jquery-3.3.1.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.js" />
+    <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.3.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -243,7 +294,9 @@
     <Compile Include="Services\PedidoService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="packages.config" />
     <EntityDeploy Include="Models\TPModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -256,8 +309,6 @@
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
-    <Content Include="Scripts\jquery-3.0.0.slim.min.map" />
-    <Content Include="Scripts\jquery-3.0.0.min.map" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -284,6 +335,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\css\" />
     <Folder Include="Images\" />
   </ItemGroup>
   <ItemGroup>

@@ -5,41 +5,67 @@
     ViewBag.Title = "Iniciar";
 }
 
-<h2>Iniciar</h2>
 
 <div class="container">
     <div class="row">
         <div class="col-md-12">
             <div class="well well-sm">
-               @using (Html.BeginForm())
-               {
-                @*<form class="form-horizontal" method="post">*@
-                    <fieldset>
-                        <legend class="text-center header">Tu pedido</legend>
+                @using (Html.BeginForm())
+                {
+                <fieldset>
+                    <legend class="header">Tu pedido</legend>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="NombreNegocio">Nombre de Negocio</label>
+                                @Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control", @id = "nombre" })
+                            </div>
 
-                        <div class="form-group">
-                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
-                            <div class="col-md-8">
-                                @Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control", @placeholder = "Nombre del negocio" })
-                                @*<input id="fname" name="name" type="text" placeholder="First Name" class="form-control">*@
+                            <div class="form-group">
+                                <label for="Descripcion">Descripcion</label>
+                                @Html.TextAreaFor(p => p.Descripcion, new { @class = "form-control", @id = "descripcion" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="precioUnidad">Precio Unidad</label>
+                                @Html.TextBoxFor(m => m.PrecioUnidad, new { @class = "form-control", @id = "precioUnidad", type = "number", min = "0" })
+                            </div>
+
+                            <div class="form-group">
+                                <label for="precioDocena">Precio Docena</label>
+                                @Html.TextBoxFor(m => m.PrecioDocena, new { @class = "form-control", @id = "precioDocena", type = "number", min = "0" })
                             </div>
                         </div>
-                        
-                        @*<div class="form-group">
-                            <span class="col-md-1 col-md-offset-2 text-center"><i class="fa fa-pencil-square-o bigicon"></i></span>
-                            <div class="col-md-8">
-                                <textarea class="form-control" id="message" name="message" placeholder="Enter your massage for us here. We will get back to you within 2 business days." rows="7"></textarea>
-                            </div>
-                        </div>*@
 
-                        <div class="form-group">
-                            <div class="col-md-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="NombreNegocio">Gusto de empanadas</label>
+                                @Html.DropDownListFor(p => p.GustoEmpanada, ViewBag.ListaDeGustos as MultiSelectList, new { @id = "gustosDisponibles", @class = "form-control multipleSelect", multiple = "multiple" })
+                            </div>
+                            <div class="form-group">
+                                <label for="NombreNegocio">Invitados</label>
+                                @Html.DropDownListFor(p => p.Usuario, ViewBag.ListaDeUsuarios as MultiSelectList, new { @id = "invitados", @class = "form-control multipleSelect", multiple = "multiple" })
                             </div>
                         </div>
-                    </fieldset>
-                @*</form>*@
-               }
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-12 text-center">
+                        </div>
+                    </div>
+
+                    <div class="btn-toolbar d-flex justify-content-around">
+                        <button type="submit" class="btn btn-Info btn-lg">Iniciar</button>
+                        <button class="btn btn-dark btn-lg">Cancelar</button>
+                    </div>
+                </fieldset>
+                }
             </div>
         </div>
     </div>

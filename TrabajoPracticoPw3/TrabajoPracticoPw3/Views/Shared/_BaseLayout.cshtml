@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    
+    <title>@ViewBag.Title - 3Empanadas</title>
+
     @Styles.Render("~/Content/Site")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Styles.Render("~/Content/font-awesome")
+    @Styles.Render("~/Content/fastselect")
 </head>
 <body>
 
     @RenderBody()
-     
-    @Scripts.Render("~/bundles/jquery");
-    @Scripts.Render("~/bundles/bootstrap");
 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/fastSearchSelect")
+    <script src="~/Content/js/Iniciar.js"></script>
 </body>
 </html>

@@ -27,6 +27,7 @@ namespace TrabajoPracticoPw3.Services
             return query;
         }
 
+
         public Boolean PedidoUsuarioResponsableIsTrue(int idPedido, Usuario usuario)
         {
             var query = (from p in ctx.Pedido
@@ -52,6 +53,22 @@ namespace TrabajoPracticoPw3.Services
                 return true;
             }
             return false;
+        }
+
+        public List<GustoEmpanada> ObtenerGustoDeEmpanadasList()
+        {
+            var query = (from ge in ctx.GustoEmpanada
+                         select ge).ToList();
+
+            return query;
+        }
+
+        public List<Usuario> ObtenerUsuarioList()
+        {
+            var query = (from u in ctx.Usuario
+                         select u).ToList();
+
+            return query;
         }
     }
 }
