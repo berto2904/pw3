@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TrabajoPracticoPw3.Helper;
 using TrabajoPracticoPw3.Models;
-
 namespace TrabajoPracticoPw3.Services
 {
     public class PedidoService
@@ -28,7 +28,9 @@ namespace TrabajoPracticoPw3.Services
                 PrecioDocena = int.Parse(form["precioDocena"]),
                 FechaCreacion = DateTime.Now,
                 IdUsuarioResponsable = usuarioLogueado.IdUsuario,
-                EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
+                //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
+                EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
+
             };
 
             int[] gustosDisponibles = Array.ConvertAll(form.GetValues("gustosDisponibles"), int.Parse);
@@ -41,10 +43,21 @@ namespace TrabajoPracticoPw3.Services
 
             }
 
-            //foreach (int invitado in invitados)
-            //{
-            //    Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == invitado);
-            //}
+            List<int> Listainvitados = invitados.OfType<int>().ToList();
+            Listainvitados.Add(usuarioLogueado.IdUsuario);
+
+            foreach (int invitadoId in Listainvitados)
+            {
+                Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == invitadoId);
+                InvitacionPedido invitacionPedido = new InvitacionPedido
+                {
+                    Pedido = nuevoPedido,
+                    Usuario = usuarioEncontrado,
+                    Token = new Guid(new Md5Hash().GetMD5((usuarioEncontrado.Email + nuevoPedido.FechaCreacion))),
+                    Completado = false
+                };
+                ctx.InvitacionPedido.Add(invitacionPedido);
+            }
 
             ctx.Pedido.Add(nuevoPedido);
             ctx.SaveChanges();

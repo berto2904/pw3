@@ -253,6 +253,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PedidosController.cs" />
+    <Compile Include="Helper\Md5Hash.cs" />
     <Compile Include="Models\EstadoPedido.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
