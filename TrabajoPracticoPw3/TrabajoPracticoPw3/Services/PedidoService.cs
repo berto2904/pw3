@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using TrabajoPracticoPw3.Models;
 
 namespace TrabajoPracticoPw3.Services
@@ -14,6 +15,43 @@ namespace TrabajoPracticoPw3.Services
             Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == idUsuario);
             return usuarioEncontrado;
         }
+
+        //------------------------------Negocio------------------------------
+
+        public void IniciarService(FormCollection form, Usuario usuarioLogueado)
+        {
+            Pedido nuevoPedido = new Pedido
+            {
+                NombreNegocio = form["nombre"],
+                Descripcion = form["descripcion"],
+                PrecioUnidad = int.Parse(form["precioUnidad"]),
+                PrecioDocena = int.Parse(form["precioDocena"]),
+                FechaCreacion = DateTime.Now,
+                IdUsuarioResponsable = usuarioLogueado.IdUsuario,
+                EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
+            };
+
+            int[] gustosDisponibles = Array.ConvertAll(form.GetValues("gustosDisponibles"), int.Parse);
+            int[] invitados = Array.ConvertAll(form.GetValues("invitados"), int.Parse);
+
+            foreach (int gustoId in gustosDisponibles)
+            {
+                GustoEmpanada gustoEncontrado = ctx.GustoEmpanada.SingleOrDefault(x => x.IdGustoEmpanada == gustoId);
+                nuevoPedido.GustoEmpanada.Add(gustoEncontrado);
+
+            }
+
+            //foreach (int invitado in invitados)
+            //{
+            //    Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == invitado);
+            //}
+
+            ctx.Pedido.Add(nuevoPedido);
+            ctx.SaveChanges();
+
+        }
+
+        //------------------------------Queries------------------------------
 
         public List<Pedido> ListarPedidosByUsuario(Usuario usuario)
         {  var query =
@@ -63,9 +101,10 @@ namespace TrabajoPracticoPw3.Services
             return query;
         }
 
-        public List<Usuario> ObtenerUsuarioList()
+        public List<Usuario> ObtenerUsuarioList(Usuario usuarioLogueado)
         {
             var query = (from u in ctx.Usuario
+                         where u.IdUsuario != usuarioLogueado.IdUsuario
                          select u).ToList();
 
             return query;

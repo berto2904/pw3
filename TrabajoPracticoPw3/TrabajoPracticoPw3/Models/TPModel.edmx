@@ -16,7 +16,7 @@
           <Key>
             <PropertyRef Name="IdGustoEmpanada" />
           </Key>
-          <Property Name="IdGustoEmpanada" Type="int" Nullable="false" />
+          <Property Name="IdGustoEmpanada" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="GustoEmpanadaDisponiblePedido">
@@ -51,7 +51,7 @@
           <Key>
             <PropertyRef Name="IdPedido" />
           </Key>
-          <Property Name="IdPedido" Type="int" Nullable="false" />
+          <Property Name="IdPedido" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdUsuarioResponsable" Type="int" Nullable="false" />
           <Property Name="NombreNegocio" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Descripcion" Type="nvarchar(max)" Nullable="false" />
@@ -516,7 +516,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />

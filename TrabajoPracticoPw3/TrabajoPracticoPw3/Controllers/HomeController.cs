@@ -42,7 +42,7 @@ namespace TrabajoPracticoPw3.Controllers
             }
             else
             {
-                ViewBag.mensaje = "Usuario invalido";
+                ViewBag.mensaje = "Usuario y/o Contraseña inválidos";
             }
             return View();
         }

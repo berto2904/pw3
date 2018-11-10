@@ -27,15 +27,19 @@ namespace TrabajoPracticoPw3.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.ListaDeGustos = new MultiSelectList(ps.ObtenerGustoDeEmpanadasList(), "IdGustoEmpanada", "Nombre");
-            ViewBag.ListaDeUsuarios = new MultiSelectList(ps.ObtenerUsuarioList(), "IdUsuario", "Email");
+            //ViewBag.ListaDeGustos = new MultiSelectList(ps.ObtenerGustoDeEmpanadasList(), "IdGustoEmpanada", "Nombre");
+            //ViewBag.ListaDeUsuarios = new MultiSelectList(ps.ObtenerUsuarioList(), "IdUsuario", "Email");
+
+            ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
             return View();
         }
-        [HttpPost]
-        public ActionResult Iniciar(Pedido pedido)
-        {
-            ValidarUsuarioSesion();
 
+        [HttpPost]
+        public ActionResult Iniciar(FormCollection form)
+        {
+            ps.IniciarService(form,usuarioLoguedado);
+           
             return View();
         }
 

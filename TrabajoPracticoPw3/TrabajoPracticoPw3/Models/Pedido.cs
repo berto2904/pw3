@@ -11,17 +11,17 @@ namespace TrabajoPracticoPw3.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class Pedido
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Pedido()
         {
-            this.InvitacionPedido = new List<InvitacionPedido>();
-            this.InvitacionPedidoGustoEmpanadaUsuario = new List<InvitacionPedidoGustoEmpanadaUsuario>();
-            this.GustoEmpanada = new List<GustoEmpanada>();
+            this.InvitacionPedido = new HashSet<InvitacionPedido>();
+            this.InvitacionPedidoGustoEmpanadaUsuario = new HashSet<InvitacionPedidoGustoEmpanadaUsuario>();
+            this.GustoEmpanada = new HashSet<GustoEmpanada>();
         }
-
+    
         public int IdPedido { get; set; }
         public int IdUsuarioResponsable { get; set; }
         public string NombreNegocio { get; set; }
@@ -31,14 +31,14 @@ namespace TrabajoPracticoPw3.Models
         public int PrecioDocena { get; set; }
         public System.DateTime FechaCreacion { get; set; }
         public Nullable<System.DateTime> FechaModificacion { get; set; }
-
+    
         public virtual EstadoPedido EstadoPedido { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<InvitacionPedido> InvitacionPedido { get; set; }
+        public virtual ICollection<InvitacionPedido> InvitacionPedido { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<InvitacionPedidoGustoEmpanadaUsuario> InvitacionPedidoGustoEmpanadaUsuario { get; set; }
+        public virtual ICollection<InvitacionPedidoGustoEmpanadaUsuario> InvitacionPedidoGustoEmpanadaUsuario { get; set; }
         public virtual Usuario Usuario { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual List<GustoEmpanada> GustoEmpanada { get; set; }
+        public virtual ICollection<GustoEmpanada> GustoEmpanada { get; set; }
     }
 }
