@@ -38,9 +38,9 @@ namespace TrabajoPracticoPw3.Controllers
         [HttpPost]
         public ActionResult Iniciar(FormCollection form)
         {
-            ps.IniciarService(form,usuarioLoguedado);
+            int idPedido = ps.IniciarService(form,usuarioLoguedado);
            
-            return View();
+            return RedirectToAction("Iniciado", new {id = idPedido });
         }
 
         public ActionResult Iniciar(int id)
@@ -54,6 +54,16 @@ namespace TrabajoPracticoPw3.Controllers
 
         public ActionResult Iniciado(int id)
         {
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+
+            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
 
             return View();
         }

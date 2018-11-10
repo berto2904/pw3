@@ -18,7 +18,7 @@ namespace TrabajoPracticoPw3.Services
 
         //------------------------------Negocio------------------------------
 
-        public void IniciarService(FormCollection form, Usuario usuarioLogueado)
+        public int IniciarService(FormCollection form, Usuario usuarioLogueado)
         {
             Pedido nuevoPedido = new Pedido
             {
@@ -49,6 +49,7 @@ namespace TrabajoPracticoPw3.Services
             ctx.Pedido.Add(nuevoPedido);
             ctx.SaveChanges();
 
+            return nuevoPedido.IdPedido;
         }
 
         //------------------------------Queries------------------------------
