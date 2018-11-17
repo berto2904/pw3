@@ -20,6 +20,8 @@ namespace TrabajoPracticoPw3.Services
 
         public int IniciarService(FormCollection form, Usuario usuarioLogueado)
         {
+            EmailService es = new EmailService();
+            Usuario uLogueado = ctx.Usuario.Find(usuarioLogueado.IdUsuario);
             Pedido nuevoPedido = new Pedido
             {
                 NombreNegocio = form["nombre"],
@@ -27,11 +29,12 @@ namespace TrabajoPracticoPw3.Services
                 PrecioUnidad = int.Parse(form["precioUnidad"]),
                 PrecioDocena = int.Parse(form["precioDocena"]),
                 FechaCreacion = DateTime.Now,
-                IdUsuarioResponsable = usuarioLogueado.IdUsuario,
+                Usuario = uLogueado,
+                //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
                 //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
                 EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
-
             };
+
 
             int[] gustosDisponibles = Array.ConvertAll(form.GetValues("gustosDisponibles"), int.Parse);
             int[] invitados = Array.ConvertAll(form.GetValues("invitados"), int.Parse);
@@ -54,14 +57,15 @@ namespace TrabajoPracticoPw3.Services
                     Pedido = nuevoPedido,
                     Usuario = usuarioEncontrado,
                     Token = new Guid(new Md5Hash().GetMD5((usuarioEncontrado.Email + nuevoPedido.FechaCreacion))),
-                    Completado = false
+                    Completado = false,
                 };
                 ctx.InvitacionPedido.Add(invitacionPedido);
+                es.EnviarEmailInvitados(invitacionPedido);
             }
 
             ctx.Pedido.Add(nuevoPedido);
             ctx.SaveChanges();
-
+            
             return nuevoPedido.IdPedido;
         }
 

@@ -39,7 +39,10 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Iniciar(FormCollection form)
         {
             int idPedido = ps.IniciarService(form,usuarioLoguedado);
-           
+            if (idPedido != 0)
+            {
+                TempData["mensaje"] = "El pedido se inició";
+            }
             return RedirectToAction("Iniciado", new {id = idPedido });
         }
 
@@ -65,6 +68,7 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
+            ViewBag.Mensaje = TempData["mensaje"];
             return View();
         }
 
