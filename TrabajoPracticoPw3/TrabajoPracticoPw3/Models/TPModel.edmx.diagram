@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9f63b64a0a1a4dfcb8f7f66ab497b242" Name="Diagram1">
+        <EntityTypeShape EntityType="C_TPModel.EstadoPedido" Width="2.625" PointX="5.375" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.GustoEmpanada" Width="3.625" PointX="6.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.InvitacionPedido" Width="2.125" PointX="0.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.InvitacionPedidoGustoEmpanadaUsuario" Width="2.875" PointX="4" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.Pedido" Width="2.875" PointX="0.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.Usuario" Width="2.875" PointX="9.875" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="C_TPModel.FK_Pedido_EstadoPedido" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.FK_InvitacionPedidoGustoEmpanadaUsuario_GustoEmpanada" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.FK_InvitacionPedido_Pedido" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.FK_InvitacionPedido_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.FK_InvitacionPedidoGustoEmpanadaUsuario_Pedido" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.FK_InvitacionPedidoGustoEmpanadaUsuario_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.FK_Pedido_Usuario" ManuallyRouted="false" />
+        <AssociationConnector Association="C_TPModel.GustoEmpanadaDisponiblePedido" ManuallyRouted="false" >
+        </AssociationConnector>
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
