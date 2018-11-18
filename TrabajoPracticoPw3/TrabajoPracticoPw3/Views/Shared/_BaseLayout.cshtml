@@ -8,17 +8,25 @@
     <title>@ViewBag.Title - 3Empanadas</title>
 
     @Styles.Render("~/Content/Site")
-    @Scripts.Render("~/bundles/modernizr")
     @Styles.Render("~/Content/font-awesome")
     @Styles.Render("~/Content/fastselect")
 </head>
 <body>
-
-    @RenderBody()
-
+    <div>
+        @RenderBody()
+        <hr />
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">&copy; @DateTime.Now.Year - 3empanadas</p>
+            </div>
+            <!-- /.container -->
+        </footer>
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/fastSearchSelect")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
     <script src="~/Content/js/Iniciar.js"></script>
 </body>
 </html>

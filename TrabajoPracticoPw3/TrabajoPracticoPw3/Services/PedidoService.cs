@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,10 +26,10 @@ namespace TrabajoPracticoPw3.Services
             Usuario uLogueado = ctx.Usuario.Find(usuarioLogueado.IdUsuario);
             Pedido nuevoPedido = new Pedido
             {
-                NombreNegocio = form["nombre"],
-                Descripcion = form["descripcion"],
-                PrecioUnidad = int.Parse(form["precioUnidad"]),
-                PrecioDocena = int.Parse(form["precioDocena"]),
+                NombreNegocio = form["NombreNegocio"],
+                Descripcion = form["Descripcion"],
+                PrecioUnidad = int.Parse(form["PrecioUnidad"]),
+                PrecioDocena = int.Parse(form["PrecioDocena"]),
                 FechaCreacion = DateTime.Now,
                 Usuario = uLogueado,
                 //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
@@ -64,8 +66,21 @@ namespace TrabajoPracticoPw3.Services
             }
 
             ctx.Pedido.Add(nuevoPedido);
-            ctx.SaveChanges();
-            
+
+            try { ctx.SaveChanges(); }
+            catch (DbEntityValidationException dbEx)
+            {
+                foreach (var validationErrors in dbEx.EntityValidationErrors)
+                {
+                    foreach (var validationError in validationErrors.ValidationErrors)
+                    {
+                        Trace.TraceInformation("Property: {0} Error: {1}",
+                            validationError.PropertyName,
+                            validationError.ErrorMessage);
+                    }
+                }
+            }
+
             return nuevoPedido.IdPedido;
         }
 

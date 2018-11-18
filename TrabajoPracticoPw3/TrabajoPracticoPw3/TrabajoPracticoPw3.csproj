@@ -165,6 +165,16 @@
     <Content Include="Content\templateEmpanada\vendor\jquery\jquery.slim.min.js" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Models\TPModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TPModel.edmx</DependentUpon>
+      <LastGenOutput>TPModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\TPModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TPModel.edmx</DependentUpon>
+      <LastGenOutput>TPModel.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -216,6 +226,13 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
+    <EntityDeploy Include="Models\TPModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TPModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\TPModel.edmx.diagram">
+      <DependentUpon>TPModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -226,16 +243,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Models\TPModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TPModel.Context.cs</LastGenOutput>
-      <DependentUpon>TPModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\TPModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>TPModel.edmx</DependentUpon>
-      <LastGenOutput>TPModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -247,6 +254,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Scripts\validacion.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -257,11 +265,11 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PedidosController.cs" />
     <Compile Include="Helper\Md5Hash.cs" />
-    <Compile Include="Models\EstadoPedido.cs">
-      <DependentUpon>TPModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EstadoPedido.cs">
+      <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GustoEmpanada.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
@@ -275,7 +283,7 @@
     <Compile Include="Models\Pedido.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\PedidoCE.cs" />
     <Compile Include="Models\TPModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -294,6 +302,8 @@
     <Compile Include="Models\Usuario.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UsuarioCE.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\HomeService.cs" />
     <Compile Include="Services\PedidoService.cs" />
@@ -303,13 +313,6 @@
       <SubType>Designer</SubType>
     </Content>
     <None Include="packages.config" />
-    <EntityDeploy Include="Models\TPModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TPModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\TPModel.edmx.diagram">
-      <DependentUpon>TPModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_BaseLayout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -321,7 +324,6 @@
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Pedidos\Elegir.cshtml" />
     <Content Include="Views\Pedidos\Iniciar.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Pedidos\Iniciado.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />

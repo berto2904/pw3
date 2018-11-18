@@ -21,6 +21,7 @@ namespace TrabajoPracticoPw3.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                         "~/Scripts/bootstrap.min.js",
+                        "~/Scripts/validacion.js",
                         "~/Scripts/bootstrap.bundle.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/Site").Include(
@@ -40,6 +41,7 @@ namespace TrabajoPracticoPw3.App_Start
             bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
                  "~/Content/font-awesome.min.css"
                 ));
+
 
                
            
