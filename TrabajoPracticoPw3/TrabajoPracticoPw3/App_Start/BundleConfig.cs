@@ -21,6 +21,7 @@ namespace TrabajoPracticoPw3.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                         "~/Scripts/bootstrap.min.js",
+                        "~/Scripts/validacion.js",
                         "~/Scripts/bootstrap.bundle.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/Site").Include(
@@ -31,8 +32,7 @@ namespace TrabajoPracticoPw3.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/fastSearchSelect").Include(
                        "~/Content/fastsearch-master/dist/fastsearch.min.js",
-                       "~/Content/fastselect-master/dist/fastselect.js",
-                       "~/Content/js/Iniciar.js"));
+                       "~/Content/fastselect-master/dist/fastselect.js"));
 
             bundles.Add(new StyleBundle("~/Content/fastselect").Include(
                 "~/Content/fastselect-master/dist/fastselect.css"
@@ -41,6 +41,7 @@ namespace TrabajoPracticoPw3.App_Start
             bundles.Add(new StyleBundle("~/Content/font-awesome").Include(
                  "~/Content/font-awesome.min.css"
                 ));
+
 
                
            

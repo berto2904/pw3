@@ -8,9 +8,9 @@ namespace TrabajoPracticoPw3.Models
 {
     public class UsuarioCE
     {   
-        [Required]
+        [StringLength(300), Required]
         public string Email { get; set; }
-        [Required]
+        [StringLength(50), Required]
         public string Password { get; set; }
     }
 
