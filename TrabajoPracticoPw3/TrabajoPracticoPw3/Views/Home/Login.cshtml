@@ -8,13 +8,14 @@
 
 @using (Html.BeginForm())
 {
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        <label for="Email">Email</label>
-        @Html.TextBoxFor(u => u.Email, new { @class = "form-control" })
+        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Email", id = "email", name = "email", type = "email", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
     </div>
     <div class="form-group">
-        <label for="password">Password</label>
-        @Html.PasswordFor(u => u.Password, new { @class = "form-control" })
+        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Contraseña", id = "password", name = "password", type = "password", autocomplete = "off" } })
+        @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
     </div>
     <button type="submit" class="btn btn-primary">Ingresar</button>
 }

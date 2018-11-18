@@ -1,4 +1,5 @@
 ﻿@using TrabajoPracticoPw3.Models
+@model TrabajoPracticoPw3.Models.Pedido
 
 @{
     Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
@@ -13,32 +14,30 @@
                 @*@using (Html.BeginForm())
                     {*@
                 <form action="/Pedidos/Iniciar" method="post">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
                     <fieldset>
                         <legend class="header">Tu pedido</legend>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="NombreNegocio">Nombre de Negocio</label>
-                                    <input type="text" class="form-control" name="nombre" value="" id="nombre" required />
-                                    @*@Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control", @id = "nombre" })*@
+                                    @Html.EditorFor(model => model.NombreNegocio, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre del Negocio", id = "nombre", name = "nombre", autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="Descripcion">Descripcion</label>
-                                    <input type="text" name="descripcion" class="form-control" value="" id="descripcion" />
-                                    @*@Html.TextAreaFor(p => p.Descripcion, new { @class = "form-control", @id = "descripcion" })*@
+                                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción", id = "descripcion", name = "descripcion", autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="precioUnidad">Precio Unidad</label>
-                                    <input type="text" name="precioUnidad" class="form-control" value="" id="precioUnidad" required />
-                                    @*@Html.TextBoxFor(m => m.PrecioUnidad, new { @class = "form-control", @id = "precioUnidad", type = "number", min = "0" })*@
+                                    @Html.EditorFor(model => model.PrecioUnidad, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio Unidad ($)", id = "precioUnidad", name = "precioUnidad", autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="precioDocena">Precio Docena</label>
-                                    <input type="text" name="precioDocena" class="form-control" value="" id="precioDocena" required />
-                                    @*@Html.TextBoxFor(m => m.PrecioDocena, new { @class = "form-control", @id = "precioDocena", type = "number", min = "0" })*@
+                                    @Html.EditorFor(model => model.PrecioDocena, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio Docena ($)", id = "precioDocena", name = "precioDocena", autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
                                 </div>
                             </div>
 
