@@ -107,7 +107,7 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Error", "Home");
             }
             ps.EliminarService(id);
-            return View();
+            return RedirectToAction("Lista");
         }
 
        public ActionResult Elegir(int id)

@@ -22,29 +22,29 @@
     <tbody>
         @foreach (Pedido pedido in ViewBag.ListaPedidos)
         {
-        <tr>
-            <td>@pedido.FechaCreacion</td>
-            <td>@pedido.NombreNegocio</td>
-            <td>@pedido.EstadoPedido.Nombre</td>
-            @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
-            {
-                <td>Responsable</td>
-                <td><a href="/Pedidos/Editar/@pedido.IdPedido" class="btn btn-warning">Editar Pedido</a></td>
-                <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
-                <td><a href="/Pedidos/Eliminar/@pedido.IdPedido" class="btn btn-danger">Eliminar</a></td>
-                @*<td><a id=@pedido.IdPedido class="botonEliminar btn btn-danger">Eliminar</a></td>*@
-            }
-            else
-            {
-                <td>Invitado</td>
+            <tr>
+                <td>@pedido.FechaCreacion</td>
+                <td>@pedido.NombreNegocio</td>
+                <td>@pedido.EstadoPedido.Nombre</td>
+                @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
+                {
+                    <td>Responsable</td>
+                    <td><a href="/Pedidos/Editar/@pedido.IdPedido" class="btn btn-warning">Editar Pedido</a></td>
+                    <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
+                    @*<td><a href="/Pedidos/Eliminar/@pedido.IdPedido" class="btn btn-danger">Eliminar</a></td>*@
+                    <td><a id=@pedido.IdPedido data-toggle="modal" data-target="#EliminarModal" data-id="@pedido.IdPedido" class="botonEliminar btn btn-danger">Eliminar</a></td>
+                }
+                else
+                {
+                    <td>Invitado</td>
+                    <td></td>
+                    <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
+                    <td></td>
+                }
                 <td></td>
-                <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
                 <td></td>
-            }
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
+                <td></td>
+            </tr>
 
         }
     </tbody>
@@ -54,4 +54,28 @@
     <a href="/Pedidos/Iniciar" class="btn btn-success">Iniciar Pedido</a>
     @*<button type="button" class="btn btn-secondary">Middle</button>
         <button type="button" class="btn btn-secondary">Right</button>*@
+</div>
+
+
+
+@* ---------------------Modal eliminar--------------------- *@
+<div class="modal fade" id="EliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Eliminar Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estas seguro de eliminar el pedido?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                <a id="idPedido" class="btn btn-danger">Eliminar</a>
+            </div>
+        </div>
+    </div>
 </div>

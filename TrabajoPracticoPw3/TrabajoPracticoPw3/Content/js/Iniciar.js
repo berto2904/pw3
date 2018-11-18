@@ -2,8 +2,14 @@
     $('.multipleSelect').fastselect();
 
 });
-$('.botonEliminar').click('shown.bs.modal', function (event) {
 
+$(document).on("click", ".botonEliminar", function (event) {
+    var idPedido = $(this).data('id');
+    $(".modal-footer #idPedido").attr("href", "/Pedidos/Eliminar/" + idPedido);    
+});
+
+$('.botonEliminar').click('', function (event) {
+    //event.target.parentNode.parentNode.cells[1].textContent
             //event.target.id;
     //$.ajax({
     //    url: "Pedidos/",
