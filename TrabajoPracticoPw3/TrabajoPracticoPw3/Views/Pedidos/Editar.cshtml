@@ -13,7 +13,7 @@
             <div class="well well-sm">
                 @*@using (Html.BeginForm())
                     {*@
-                <form action="/Pedidos/Iniciar" method="post">
+                <form action="/Pedidos/Editar" method="post">
                     <fieldset>
                         <legend class="header">Tu pedido</legend>
                         <div class="row">
@@ -101,6 +101,7 @@
                                                 </tr>
                                             }
                                         </table>
+                                        <br />
                                         <select name="invitados" id="invitados" class="form-control multipleSelect" required multiple>
                                             @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
                                             {

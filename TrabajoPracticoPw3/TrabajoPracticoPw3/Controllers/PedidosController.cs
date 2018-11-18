@@ -110,6 +110,31 @@ namespace TrabajoPracticoPw3.Controllers
             return View(PedidoAEditar);
         }
 
+        [HttpPost]
+        public ActionResult Editar(FormCollection form)
+        {
+            int envioInvitacion = ps.ObtenerEnviarInvitacion(form);
+            
+            //Pedido pedidoEditado = ps.ObtenerPedidoDesdeFormCollection(form);
+
+            //Pedido pedidoAEditar = ps.ObtenerPedidoPorId(pedidoEditado.IdPedido);
+
+            List<Usuario> usuariosAEnviarInvitacion = ps.DeterminarEnviosDeInvitacionDesdeFormCollection(form);
+
+            if(envioInvitacion == 0)
+            {
+                // no se envia invitacion
+            }
+            else
+            {
+                // se envia invitacion a usuariosAEnviarInvitacion
+            }
+
+            ps.ActualizarValoresDeUnPedidoDesdeFormCollection(form);
+
+            return View("Lista");
+        }
+
         public ActionResult Eliminar(int id)
         {
             if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))

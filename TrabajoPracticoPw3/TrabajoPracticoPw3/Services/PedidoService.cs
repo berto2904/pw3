@@ -65,21 +65,22 @@ namespace TrabajoPracticoPw3.Services
 
             ctx.Pedido.Add(nuevoPedido);
             ctx.SaveChanges();
-            
+
             return nuevoPedido.IdPedido;
         }
 
         //------------------------------Queries------------------------------
 
         public List<Pedido> ListarPedidosByUsuario(Usuario usuario)
-        {  var query =
-               (from p in ctx.Pedido
-               join ep in ctx.EstadoPedido on p.IdEstadoPedido equals ep.IdEstadoPedido
-               join ip in ctx.InvitacionPedido on p.IdPedido equals ip.IdPedido
-               where ip.IdUsuario == usuario.IdUsuario
-                orderby p.FechaCreacion
-                select
-                    p).ToList();
+        {
+            var query =
+                (from p in ctx.Pedido
+                 join ep in ctx.EstadoPedido on p.IdEstadoPedido equals ep.IdEstadoPedido
+                 join ip in ctx.InvitacionPedido on p.IdPedido equals ip.IdPedido
+                 where ip.IdUsuario == usuario.IdUsuario
+                 orderby p.FechaCreacion
+                 select
+                     p).ToList();
             return query;
         }
 
@@ -98,13 +99,151 @@ namespace TrabajoPracticoPw3.Services
             return false;
         }
 
+        internal List<Usuario> DeterminarEnviosDeInvitacionDesdeFormCollection(FormCollection form)
+        {
+            int IdEnviarInvitacion = ObtenerEnviarInvitacion(form);
+
+            List<Usuario> usuariosAInvitar = new List<Usuario>();
+
+            switch (IdEnviarInvitacion)
+            {
+                case 1:
+                    //A nadie
+                    break;
+                case 2:
+                    //Re enviar a todos
+                    usuariosAInvitar = ObtenerTodosLosUsuariosInvitados(form);
+                    break;
+                case 3:
+                    //Enviar solo a los nuevos
+                    usuariosAInvitar = ObtenerLosUsuariosQueAntesNoEstabanInvitados(form);
+                    break;
+                case 4:
+                    //Re enviar a los que no eligieron gustos
+                    usuariosAInvitar = ObtenerLosUsuariosInvitadosQueNoEligieronGustos(form);
+                    break;
+            }
+
+            return usuariosAInvitar;
+        }
+
+
+        public List<Usuario> ObtenerTodosLosUsuariosInvitados(FormCollection form)
+        {
+            List<Usuario> listaUsuario = new List<Usuario>();
+            string[] usuariosInvitados = form.GetValues("invitados");
+            foreach (var usuario in usuariosInvitados)
+            {
+                Usuario usuarioEncontrado = ctx.Usuario.Find(int.Parse(usuario));
+                listaUsuario.Add(usuarioEncontrado);
+            }
+
+            return listaUsuario;
+        }
+
+        public List<Usuario> ObtenerLosUsuariosQueAntesNoEstabanInvitados(FormCollection form)
+        {
+            List<Usuario> usuariosAInvitar = new List<Usuario>();
+
+            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["id"]));
+
+            foreach (Usuario usuario in form)
+            {
+                foreach (InvitacionPedido invitacionPedido in pedidoAEditar.InvitacionPedido)
+                {
+                    if (usuario.InvitacionPedido.Contains(invitacionPedido))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        usuariosAInvitar.Add(usuario);
+                        break;
+                    }
+                }
+            }
+
+            return usuariosAInvitar;
+        }
+
+        private List<Usuario> ObtenerLosUsuariosInvitadosQueNoEligieronGustos(FormCollection form)
+        {
+            List<Usuario> usuariosAInvitar = new List<Usuario>();
+
+            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["id"]));
+
+            foreach (Usuario usuario in form)
+            {
+                if (pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                {
+                    usuariosAInvitar.Add(usuario);
+                }
+                else
+                {
+                    foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario)
+                    {
+                        if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            usuariosAInvitar.Add(usuario);
+                        }
+                    }
+                }
+            }
+
+            return usuariosAInvitar;
+        }
+
+        public Pedido ObtenerPedidoDesdeFormCollection(FormCollection form)
+        {
+            Pedido pedidoEditado = new Pedido
+            {
+                NombreNegocio = form["nombre"],
+                Descripcion = form["descripcion"],
+                PrecioUnidad = int.Parse(form["precioUnidad"]),
+                PrecioDocena = int.Parse(form["precioDocena"]),
+                FechaCreacion = DateTime.Now,
+                //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
+                //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
+                EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
+            };
+            return pedidoEditado;
+        }
+
+        internal void ActualizarValoresDeUnPedidoDesdeFormCollection(FormCollection form)
+        {
+            Pedido pedidoEditado = ObtenerPedidoDesdeFormCollection(form);
+
+            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["id"]));
+
+            pedidoAEditar.Descripcion = pedidoEditado.Descripcion;
+            pedidoAEditar.GustoEmpanada = pedidoEditado.GustoEmpanada;
+            pedidoAEditar.InvitacionPedido = pedidoEditado.InvitacionPedido;
+            pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario = pedidoEditado.InvitacionPedidoGustoEmpanadaUsuario;
+            pedidoAEditar.NombreNegocio = pedidoEditado.NombreNegocio;
+            pedidoAEditar.PrecioDocena = pedidoEditado.PrecioDocena;
+            pedidoAEditar.PrecioUnidad = pedidoEditado.PrecioUnidad;
+
+            ctx.SaveChanges();
+        }
+
+        public int ObtenerEnviarInvitacion(FormCollection form)
+        {
+            int envioInvitacion = int.Parse(form["enviarInvitacion"]);
+
+            return envioInvitacion;
+        }
+
         public Boolean InvitacionPedidoUsuarioIsTrue(int idPedido, Usuario usuario)
         {
             var query = (from ip in ctx.InvitacionPedido
                          where ip.IdUsuario == usuario.IdUsuario && ip.IdPedido == idPedido
                          select ip).ToList();
 
-            if(query.Count > 0)
+            if (query.Count > 0)
             {
                 return true;
             }
