@@ -127,5 +127,14 @@ namespace TrabajoPracticoPw3.Services
 
             return query;
         }
+
+        public Pedido ObtenerPedidoPorId(int id)
+        {
+            var query = (from p in ctx.Pedido
+                         where p.IdPedido == id
+                         select p).FirstOrDefault();
+
+            return query;
+        }
     }
 }

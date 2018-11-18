@@ -1,0 +1,140 @@
+﻿@using TrabajoPracticoPw3.Models
+@model TrabajoPracticoPw3.Models.Pedido
+
+@{
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+    ViewBag.Title = "Iniciar";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                @*@using (Html.BeginForm())
+                    {*@
+                <form action="/Pedidos/Iniciar" method="post">
+                    <fieldset>
+                        <legend class="header">Tu pedido</legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="NombreNegocio">Nombre de Negocio</label>
+                                    <input type="text" class="form-control" name="nombre" value="@Model.NombreNegocio" id="nombre" required />
+                                    @*@Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control", @id = "nombre" })*@
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Descripcion">Descripcion</label>
+                                    <input type="text" name="descripcion" class="form-control" value="@Model.Descripcion" id="descripcion" />
+                                    @*@Html.TextAreaFor(p => p.Descripcion, new { @class = "form-control", @id = "descripcion" })*@
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="precioUnidad">Precio Unidad</label>
+                                    <input type="text" name="precioUnidad" class="form-control" value="@Model.PrecioUnidad" id="precioUnidad" required />
+                                    @*@Html.TextBoxFor(m => m.PrecioUnidad, new { @class = "form-control", @id = "precioUnidad", type = "number", min = "0" })*@
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="precioDocena">Precio Docena</label>
+                                    <input type="text" name="precioDocena" class="form-control" value="@Model.PrecioDocena" id="precioDocena" required />
+                                    @*@Html.TextBoxFor(m => m.PrecioDocena, new { @class = "form-control", @id = "precioDocena", type = "number", min = "0" })*@
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="NombreNegocio">Gusto de empanadas</label>
+                                    <select name="gustosDisponibles" id="gustosDisponibles" class="form-control multipleSelect" required multiple>
+                                        @foreach (GustoEmpanada gusto in ViewBag.ListaDeGustos)
+                                        {
+                                            if (Model.GustoEmpanada.Contains(gusto))
+                                            {
+                                                <option value="@gusto.IdGustoEmpanada" selected>@gusto.Nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@gusto.IdGustoEmpanada">@gusto.Nombre</option>
+                                            }
+                                        }
+                                    </select>
+
+                                    @*if (currentStatus=="Completed"){
+                                        selStatus.options[1].selected=true;
+                                        }*@
+
+                                    @*@Html.DropDownListFor(p => p.GustoEmpanada, ViewBag.ListaDeGustos as MultiSelectList, new { @id = "gustosDisponibles", @class = "form-control multipleSelect", multiple = "multiple" })*@
+                                </div>
+                                <div class="form-group">
+                                    <label for="NombreNegocio">Invitados</label>
+                                    <div class="form-group">
+                                        <table>
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Eligio gustos?</th>
+                                            </tr>
+                                            @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
+                                            {
+                                            <tr>
+                                                <td>@usuario.Email</td>
+                                                @if (Model.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                                                {
+                                                    <td> (NO) </td>
+                                                }
+                                                else
+                                                {
+                                                    foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in Model.InvitacionPedidoGustoEmpanadaUsuario)
+                                                    {
+                                                        if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
+                                                        {
+                                                            <td> (SI) </td>
+                                                            break;
+                                                        }
+                                                        else
+                                                        {
+                                                            <td> (NO) </td>
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                    <select name="invitados" id="invitados" class="form-control multipleSelect" required multiple>
+                                        @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
+                                        {
+                                            foreach (InvitacionPedido invitacionPedido in Model.InvitacionPedido)
+                                            {
+                                                if (usuario.InvitacionPedido.Contains(invitacionPedido))
+                                                {
+                                                    <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
+                                                    break;
+                                                }
+                                                else
+                                                {
+                                                    <option value="@usuario.IdUsuario">@usuario.Email</option>
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                    @*@Html.DropDownListFor(p => p., ViewBag.ListaDeUsuarios as MultiSelectList, new { @id = "invitados", @class = "form-control multipleSelect", multiple = "multiple" })*@
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-toolbar d-flex justify-content-around">
+                            <button type="submit" class="btn btn-Info btn-lg">Guardar</button>
+                            <button class="btn btn-dark btn-lg">Cancelar</button>
+                        </div>
+
+                    </fieldset>
+                </form>
+                @*}*@
+            </div>
+        </div>
+    </div>
+</div>

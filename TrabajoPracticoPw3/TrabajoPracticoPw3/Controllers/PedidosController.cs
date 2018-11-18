@@ -89,6 +89,14 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Editar(int id)
         {
             //ValidarUsuarioSesion();
+
+            Pedido PedidoAEditar = ps.ObtenerPedidoPorId(id);
+
+            if (PedidoAEditar.EstadoPedido.Nombre=="Cerrado")
+            {
+                TempData["mensaje"] = "El pedido se encuentra Cerrado";
+                return RedirectToAction("Detalle");
+            }
      
             if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
             {
@@ -96,7 +104,10 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            return View();
+            ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
+
+            return View(PedidoAEditar);
         }
 
         public ActionResult Eliminar(int id)
