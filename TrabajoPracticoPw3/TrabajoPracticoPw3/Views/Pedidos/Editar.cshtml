@@ -61,74 +61,85 @@
                                     </select>
 
                                     @*if (currentStatus=="Completed"){
-                                        selStatus.options[1].selected=true;
-                                        }*@
+                    selStatus.options[1].selected=true;
+                    }*@
 
                                     @*@Html.DropDownListFor(p => p.GustoEmpanada, ViewBag.ListaDeGustos as MultiSelectList, new { @id = "gustosDisponibles", @class = "form-control multipleSelect", multiple = "multiple" })*@
                                 </div>
                                 <div class="form-group">
                                     <label for="NombreNegocio">Invitados</label>
                                     <div class="form-group">
-                                        <table>
+                                        <table class="table-borderless tab-pane">
                                             <tr>
                                                 <th>Usuario</th>
                                                 <th>Eligio gustos?</th>
                                             </tr>
                                             @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
                                             {
-                                            <tr>
-                                                <td>@usuario.Email</td>
-                                                @if (Model.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
-                                                {
-                                                    <td> (NO) </td>
-                                                }
-                                                else
-                                                {
-                                                    foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in Model.InvitacionPedidoGustoEmpanadaUsuario)
+                                                <tr>
+                                                    <td>@usuario.Email</td>
+                                                    @if (Model.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
                                                     {
-                                                        if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
+                                                        <td> (NO) </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in Model.InvitacionPedidoGustoEmpanadaUsuario)
                                                         {
-                                                            <td> (SI) </td>
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            <td> (NO) </td>
-                                                            break;
+                                                            if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
+                                                            {
+                                                                <td> (SI) </td>
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                <td> (NO) </td>
+                                                                break;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            </tr>
+                                                </tr>
                                             }
                                         </table>
-                                    </div>
-                                    <select name="invitados" id="invitados" class="form-control multipleSelect" required multiple>
-                                        @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
-                                        {
-                                            foreach (InvitacionPedido invitacionPedido in Model.InvitacionPedido)
+                                        <select name="invitados" id="invitados" class="form-control multipleSelect" required multiple>
+                                            @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
                                             {
-                                                if (usuario.InvitacionPedido.Contains(invitacionPedido))
+                                                foreach (InvitacionPedido invitacionPedido in Model.InvitacionPedido)
                                                 {
-                                                    <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    <option value="@usuario.IdUsuario">@usuario.Email</option>
-                                                    break;
+                                                    if (usuario.InvitacionPedido.Contains(invitacionPedido))
+                                                    {
+                                                        <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
+                                                        break;
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@usuario.IdUsuario">@usuario.Email</option>
+                                                        break;
+                                                    }
                                                 }
                                             }
-                                        }
-                                    </select>
+                                        </select>
+                                    </div>
 
                                     @*@Html.DropDownListFor(p => p., ViewBag.ListaDeUsuarios as MultiSelectList, new { @id = "invitados", @class = "form-control multipleSelect", multiple = "multiple" })*@
                                 </div>
                             </div>
                         </div>
-
+<hr />
+                        <div style="display:flex;justify-content:center;align-items:center;">
+                            <div class="col-sm-6" style="text-align:right">Enviar invitacion:</div>
+                            <div class="col-sm-6" style="text-align:left">
+                                <SELECT NAME="enviarInvitacion" id="invitacion" class="form-control" required>
+                                    <OPTION VALUE="1">A nadie</OPTION>
+                                    <OPTION VALUE="2">Re-Enviar invitacion a todos</OPTION>
+                                    <OPTION VALUE="3">Enviar solo a los nuevos</OPTION>
+                                    <OPTION VALUE="4">Re-Enviar solo a los que no eligieron gustos</OPTION>
+                                </SELECT>
+                            </div>
+                        </div>
+                        <hr />
                         <div class="btn-toolbar d-flex justify-content-around">
                             <button type="submit" class="btn btn-Info btn-lg">Guardar</button>
-                            <button class="btn btn-dark btn-lg">Cancelar</button>
                         </div>
 
                     </fieldset>
