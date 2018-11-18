@@ -22,28 +22,29 @@
     <tbody>
         @foreach (Pedido pedido in ViewBag.ListaPedidos)
         {
-            <tr>
-                <td>@pedido.FechaCreacion</td>
-                <td>@pedido.NombreNegocio</td>
-                <td>@pedido.EstadoPedido.Nombre</td>
-                @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
-                {
-                    <td>Responsable</td>
-                    <td><a href="/Pedidos/Editar/@pedido.IdPedido" class="btn btn-warning">Editar Pedido</a></td>
-                    <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
-                    <td><a href="/Pedidos/Eliminar/@pedido.IdPedido" class="btn btn-danger">Eliminar</a></td>
-                }
-                else
-                {
-                    <td>Invitado</td>
-                    <td></td>
-                    <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
-                    <td></td>
-                }
+        <tr>
+            <td>@pedido.FechaCreacion</td>
+            <td>@pedido.NombreNegocio</td>
+            <td>@pedido.EstadoPedido.Nombre</td>
+            @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
+            {
+                <td>Responsable</td>
+                <td><a href="/Pedidos/Editar/@pedido.IdPedido" class="btn btn-warning">Editar Pedido</a></td>
+                <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
+                <td><a href="/Pedidos/Eliminar/@pedido.IdPedido" class="btn btn-danger">Eliminar</a></td>
+                @*<td><a id=@pedido.IdPedido class="botonEliminar btn btn-danger">Eliminar</a></td>*@
+            }
+            else
+            {
+                <td>Invitado</td>
                 <td></td>
+                <td><a href="/Pedidos/Elegir/@pedido.IdPedido" class="btn btn-primary">Elegir Gustos</a></td>
                 <td></td>
-                <td></td>
-            </tr>
+            }
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
 
         }
     </tbody>

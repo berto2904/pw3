@@ -31,8 +31,7 @@ namespace TrabajoPracticoPw3.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/fastSearchSelect").Include(
                        "~/Content/fastsearch-master/dist/fastsearch.min.js",
-                       "~/Content/fastselect-master/dist/fastselect.js",
-                       "~/Content/js/Iniciar.js"));
+                       "~/Content/fastselect-master/dist/fastselect.js"));
 
             bundles.Add(new StyleBundle("~/Content/fastselect").Include(
                 "~/Content/fastselect-master/dist/fastselect.css"

@@ -6,11 +6,11 @@
     <edmx:Diagrams>
       <Diagram DiagramId="9f63b64a0a1a4dfcb8f7f66ab497b242" Name="Diagram1">
         <EntityTypeShape EntityType="C_TPModel.EstadoPedido" Width="2.625" PointX="5.375" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="C_TPModel.GustoEmpanada" Width="3.625" PointX="6.5" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.GustoEmpanada" Width="3.625" PointX="6" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="C_TPModel.InvitacionPedido" Width="2.125" PointX="0.5" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="C_TPModel.InvitacionPedidoGustoEmpanadaUsuario" Width="2.875" PointX="4" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.InvitacionPedidoGustoEmpanadaUsuario" Width="2.875" PointX="4.375" PointY="5.375" IsExpanded="true" />
         <EntityTypeShape EntityType="C_TPModel.Pedido" Width="2.875" PointX="0.75" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="C_TPModel.Usuario" Width="2.875" PointX="9.875" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.Usuario" Width="2.875" PointX="10.625" PointY="0.625" IsExpanded="true" />
         <AssociationConnector Association="C_TPModel.FK_Pedido_EstadoPedido" ManuallyRouted="false" />
         <AssociationConnector Association="C_TPModel.FK_InvitacionPedidoGustoEmpanadaUsuario_GustoEmpanada" ManuallyRouted="false" />
         <AssociationConnector Association="C_TPModel.FK_InvitacionPedido_Pedido" ManuallyRouted="false" />

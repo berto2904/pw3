@@ -69,6 +69,52 @@ namespace TrabajoPracticoPw3.Services
             return nuevoPedido.IdPedido;
         }
 
+
+        public int EliminarService(int id)
+        {
+            Pedido pedido = ObtenerPedidoById(id);
+            List<int> gustoEmpanadasIds = new List<int>();
+            List<int> invitacionPedidoIds = new List<int>();
+            List<int> invitacionPedidoGustoEmpanadaUsuarioIds = new List<int>();
+
+            //Agregacion
+            foreach (var gusto in pedido.GustoEmpanada)
+            {
+                gustoEmpanadasIds.Add(gusto.IdGustoEmpanada);
+            }
+
+            foreach (var invitacion in pedido.InvitacionPedido)
+            {
+                invitacionPedidoIds.Add(invitacion.IdInvitacionPedido);
+            }
+            foreach (var invitacionPedidoGustoEmpanadaUsuario in pedido.InvitacionPedidoGustoEmpanadaUsuario)
+            {
+                invitacionPedidoGustoEmpanadaUsuarioIds.Add(invitacionPedidoGustoEmpanadaUsuario.IdInvitacionPedidoGustoEmpanadaUsuario);
+            }
+
+            //Eliminacion 
+            foreach (var idGustos in gustoEmpanadasIds)
+            {
+                var gustoEliminar = ctx.GustoEmpanada.FirstOrDefault(g => g.IdGustoEmpanada == idGustos);
+                pedido.GustoEmpanada.Remove(gustoEliminar);
+            }
+
+            foreach (var idInvitacion in invitacionPedidoIds)
+            {
+                var invitacionEliminar = ctx.InvitacionPedido.FirstOrDefault(i => i.IdInvitacionPedido == idInvitacion);
+                ctx.InvitacionPedido.Remove(invitacionEliminar);
+            }
+            
+            foreach(var idInvitacionPedidoGustoEmpanadaUsuario in invitacionPedidoGustoEmpanadaUsuarioIds)
+            {
+                var invitacionPedidoGustoEmpanadaUsuarioEliminar = ctx.InvitacionPedidoGustoEmpanadaUsuario.FirstOrDefault(i => i.IdInvitacionPedidoGustoEmpanadaUsuario == idInvitacionPedidoGustoEmpanadaUsuario);
+                ctx.InvitacionPedidoGustoEmpanadaUsuario.Remove(invitacionPedidoGustoEmpanadaUsuarioEliminar);
+            }
+            ctx.Pedido.Remove(pedido);
+            ctx.SaveChanges();
+
+            return pedido.IdPedido;
+        }
         //------------------------------Queries------------------------------
 
         public List<Pedido> ListarPedidosByUsuario(Usuario usuario)
@@ -82,7 +128,6 @@ namespace TrabajoPracticoPw3.Services
                     p).ToList();
             return query;
         }
-
 
         public Boolean PedidoUsuarioResponsableIsTrue(int idPedido, Usuario usuario)
         {
@@ -126,6 +171,18 @@ namespace TrabajoPracticoPw3.Services
                          select u).ToList();
 
             return query;
+        }
+
+        public Pedido ObtenerPedidoById(int id)
+        {
+            Pedido pedido = ctx.Pedido.Find(id);
+            return pedido;
+        }
+
+        public GustoEmpanada ObtenerGustoEmpanadaById(int id)
+        {
+            GustoEmpanada gusto = ctx.GustoEmpanada.Find(id);
+            return gusto;
         }
     }
 }

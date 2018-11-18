@@ -106,6 +106,7 @@ namespace TrabajoPracticoPw3.Controllers
                 TempData["mensaje"] = "Acceso invalido";
                 return RedirectToAction("Error", "Home");
             }
+            ps.EliminarService(id);
             return View();
         }
 
