@@ -332,7 +332,6 @@
     <Content Include="Views\Pedidos\Lista.cshtml" />
     <Content Include="Views\Shared\_UsuarioLayout.cshtml" />
     <Content Include="Views\Shared\_AnonimoLayout.cshtml" />
-    <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Pedidos\Elegir.cshtml" />
     <Content Include="Views\Pedidos\Iniciar.cshtml" />
