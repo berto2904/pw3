@@ -130,6 +130,41 @@ namespace TrabajoPracticoPw3.Services
 
             return pedido.IdPedido;
         }
+
+        public int ElegirService(FormCollection form, Usuario usuarioLoguedado)
+        {
+            Pedido pedido = ObtenerPedidoById(int.Parse(form["idPedido"]));
+
+            
+
+            foreach (var gusto in pedido.GustoEmpanada)
+            {
+                pedido.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i=> i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault());
+                try
+                {
+                    var cantidadEmpanada = int.Parse(form["gustoEmpanada_" + gusto.IdGustoEmpanada]);
+                    InvitacionPedidoGustoEmpanadaUsuario ipgeu = new InvitacionPedidoGustoEmpanadaUsuario
+                    {
+                        Cantidad = cantidadEmpanada,
+                        GustoEmpanada = gusto,
+                        IdUsuario = usuarioLoguedado.IdUsuario
+                    };
+
+                    pedido.InvitacionPedidoGustoEmpanadaUsuario.Add(ipgeu);
+                
+
+                }
+                catch (Exception)
+                {
+
+                    
+                }
+                
+            }
+                    ctx.SaveChanges();
+            return pedido.IdPedido;
+        }
+
         //------------------------------Queries------------------------------
 
         public List<Pedido> ListarPedidosByUsuario(Usuario usuario)
@@ -198,6 +233,15 @@ namespace TrabajoPracticoPw3.Services
         {
             GustoEmpanada gusto = ctx.GustoEmpanada.Find(id);
             return gusto;
+        }
+
+        public List<InvitacionPedidoGustoEmpanadaUsuario> ObtenerIPGEUByIdPedido(int id, Usuario usuarioLogueado)
+        {
+            var query = (from i in ctx.InvitacionPedidoGustoEmpanadaUsuario
+                         where i.IdPedido == id && i.IdUsuario == usuarioLogueado.IdUsuario
+                         select i).ToList();
+
+            return query;
         }
     }
 }

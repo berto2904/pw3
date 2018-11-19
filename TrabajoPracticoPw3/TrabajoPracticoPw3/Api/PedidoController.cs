@@ -4,15 +4,22 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using TrabajoPracticoPw3.Models;
+using Newtonsoft.Json;
+using System.Web.Http.Cors;
 
 namespace TrabajoPracticoPw3.Api
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PedidoController : ApiController
     {
+        TPEntities ctx = new TPEntities();
         // GET api/values
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            List<Pedido> listaPedidos = ctx.Pedido.ToList();
+            string json = JsonConvert.SerializeObject(listaPedidos);
+            return json;
         }
 
         // GET api/values/5

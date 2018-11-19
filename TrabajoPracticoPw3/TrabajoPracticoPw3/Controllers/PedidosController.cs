@@ -117,8 +117,20 @@ namespace TrabajoPracticoPw3.Controllers
                 TempData["mensaje"] = "Acceso invalido";
                 return RedirectToAction("Error","Home");
             }
+            Pedido pedido = ps.ObtenerPedidoById(id);
+            return View(pedido);
+        }
 
-            return View();
+        [HttpPost]
+        public ActionResult Elegir(FormCollection form)
+        {
+            int idPedido = ps.ElegirService(form, usuarioLoguedado);
+            if (idPedido != 0)
+            {
+                TempData["mensaje"] = "has elegido gustos";
+            }
+
+            return RedirectToAction("Lista", new { id = idPedido });
         }
 
         public ActionResult Detalle()

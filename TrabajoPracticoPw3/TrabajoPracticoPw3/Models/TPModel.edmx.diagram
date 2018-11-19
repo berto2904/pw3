@@ -8,7 +8,7 @@
         <EntityTypeShape EntityType="C_TPModel.EstadoPedido" Width="2.625" PointX="5.375" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="C_TPModel.GustoEmpanada" Width="3.625" PointX="6" PointY="2.875" IsExpanded="true" />
         <EntityTypeShape EntityType="C_TPModel.InvitacionPedido" Width="2.125" PointX="0.5" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="C_TPModel.InvitacionPedidoGustoEmpanadaUsuario" Width="2.875" PointX="4.375" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="C_TPModel.InvitacionPedidoGustoEmpanadaUsuario" Width="2.875" PointX="3.875" PointY="5.125" IsExpanded="true" />
         <EntityTypeShape EntityType="C_TPModel.Pedido" Width="2.875" PointX="0.75" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="C_TPModel.Usuario" Width="2.875" PointX="10.625" PointY="0.625" IsExpanded="true" />
         <AssociationConnector Association="C_TPModel.FK_Pedido_EstadoPedido" ManuallyRouted="false" />
