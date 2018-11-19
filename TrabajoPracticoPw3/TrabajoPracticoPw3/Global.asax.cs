@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using TrabajoPracticoPw3.App_Start;
+using System.Web.Http;
 
 namespace TrabajoPracticoPw3
 {
@@ -14,6 +15,7 @@ namespace TrabajoPracticoPw3
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
