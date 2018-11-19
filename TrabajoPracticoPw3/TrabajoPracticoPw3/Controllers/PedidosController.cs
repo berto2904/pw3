@@ -66,10 +66,9 @@ namespace TrabajoPracticoPw3.Controllers
             {
                 TempData["mensaje"] = "Acceso invalido";
                 return RedirectToAction("Error", "Home");
-            }
-
+            }        
             ViewBag.Mensaje = TempData["mensaje"];
-            return View();
+            return View(ps.ObtenerPedidoById(id));
         }
 
         public ActionResult Lista()

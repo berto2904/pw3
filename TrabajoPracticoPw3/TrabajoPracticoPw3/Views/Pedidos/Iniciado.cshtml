@@ -1,4 +1,4 @@
-﻿
+﻿@model TrabajoPracticoPw3.Models.Pedido
 @{
     Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
     ViewBag.Title = "Iniciado";
@@ -18,9 +18,9 @@
         <div class="card text-center" style="width: 18rem;">
             <img class="card-img-top" src="~/Content/images/3empanadas.jpg" alt="3Empanadas" />
             <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <h5 class="card-title">Felicitaciones!</h5>
+                <p class="card-text">Su pedido ha sido iniciado.</p>
+                <a href="/Pedidos/Editar/@Model.IdPedido" class="btn btn-primary">Editar</a>
             </div>
         </div>
 
