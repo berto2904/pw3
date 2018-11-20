@@ -88,6 +88,14 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Editar(int id)
         {
             //ValidarUsuarioSesion();
+
+            Pedido PedidoAEditar = ps.ObtenerPedidoPorId(id);
+
+            if (PedidoAEditar.EstadoPedido.Nombre=="Cerrado")
+            {
+                TempData["mensaje"] = "El pedido se encuentra Cerrado";
+                return RedirectToAction("Detalle");
+            }
      
             if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
             {
@@ -95,7 +103,40 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            return View();
+            ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
+
+            return View(PedidoAEditar);
+        }
+
+        [HttpPost]
+        public ActionResult Editar(FormCollection form)
+        {
+            int envioInvitacion = ps.ObtenerEnviarInvitacion(form);
+            
+            //Pedido pedidoEditado = ps.ObtenerPedidoDesdeFormCollection(form);
+
+            //Pedido pedidoAEditar = ps.ObtenerPedidoPorId(pedidoEditado.IdPedido);
+
+            List<Usuario> usuariosAEnviarInvitacion = ps.DeterminarEnviosDeInvitacionDesdeFormCollection(form);
+
+            Console.WriteLine(usuariosAEnviarInvitacion);
+
+            if(envioInvitacion == 0)
+            {
+                // no se envia invitacion
+            }
+            else
+            {
+                // se envia invitacion a usuariosAEnviarInvitacion
+            }
+
+            ps.ActualizarValoresDeUnPedidoDesdeFormCollection(form);
+
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+            ViewBag.ListaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
+
+            return View("Lista", usuarioLoguedado);
         }
 
         public ActionResult Eliminar(int id)
