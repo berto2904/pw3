@@ -1,15 +1,21 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Error";
-    Layout = "~/Views/Shared/_Error.cshtml";
+    Layout = "~/Views/Shared/_AnonimoLayout.cshtml";
 }
 
-<h2>Error</h2>
-
-@if(ViewBag.Mensaje != null)
-{
-<div class="alert alert-danger" role="alert">
-    @ViewBag.Mensaje
+<div class="container-w3layouts  text-center">
+    <div class="agileits-logo">
+        <h1>
+            <a href="index.html">
+                <br />
+                <span class="fa fa-spinner" aria-hidden="true"></span>@ViewBag.Title
+            </a>
+        </h1>
+    </div>
+    <p>
+        @ViewBag.Description
+    </p>
+    <div class="home">
+        @Html.ActionLink("Volver", "Lista", "Pedidos", new { area = "" }, new { @class = "navbar-brand" })
+    </div>
 </div>
-
-}
