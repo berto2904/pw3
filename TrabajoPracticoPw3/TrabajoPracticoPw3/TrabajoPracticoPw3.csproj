@@ -63,7 +63,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-<<<<<<< HEAD
     </Reference>
     <Reference Include="RestSharp, Version=106.0.1.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.0.1\lib\net452\RestSharp.dll</HintPath>
@@ -74,8 +73,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.6\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-=======
->>>>>>> Vista_Editar_DB
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -94,7 +91,6 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.6\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-<<<<<<< HEAD
     <Reference Include="System.Web.Http, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.6\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
@@ -104,8 +100,6 @@
     <Reference Include="System.Web.Http.WebHost, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.6\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
-=======
->>>>>>> Vista_Editar_DB
     <Reference Include="System.Web.Mvc, Version=5.2.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.6\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
@@ -254,7 +248,6 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-<<<<<<< HEAD
     <EntityDeploy Include="Models\TPModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TPModel.Designer.cs</LastGenOutput>
@@ -262,8 +255,6 @@
     <Content Include="Models\TPModel.edmx.diagram">
       <DependentUpon>TPModel.edmx</DependentUpon>
     </Content>
-=======
->>>>>>> Vista_Editar_DB
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -276,8 +267,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-<<<<<<< HEAD
-=======
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Models\TPModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -289,7 +278,6 @@
       <DependentUpon>TPModel.edmx</DependentUpon>
       <LastGenOutput>TPModel.cs</LastGenOutput>
     </Content>
->>>>>>> Vista_Editar_DB
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\popper-utils.js" />
     <Content Include="Scripts\popper-utils.min.js" />
@@ -367,17 +355,9 @@
     <Content Include="Views\Pedidos\Lista.cshtml" />
     <Content Include="Views\Shared\_UsuarioLayout.cshtml" />
     <Content Include="Views\Shared\_AnonimoLayout.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\Pedidos\Elegir.cshtml" />
     <Content Include="Views\Pedidos\Iniciar.cshtml" />
-=======
-    <Content Include="Views\Shared\_Error.cshtml" />
-    <Content Include="Views\Home\Error.cshtml" />
-    <Content Include="Views\Pedidos\Elegir.cshtml" />
-    <Content Include="Views\Pedidos\Iniciar.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
->>>>>>> Vista_Editar_DB
     <Content Include="Views\Pedidos\Iniciado.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -388,11 +368,8 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-<<<<<<< HEAD
     <Content Include="Views\Pedidos\Eliminar.cshtml" />
-=======
     <Content Include="Views\Pedidos\Editar.cshtml" />
->>>>>>> Vista_Editar_DB
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

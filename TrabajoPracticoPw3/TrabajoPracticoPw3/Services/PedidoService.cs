@@ -119,8 +119,8 @@ namespace TrabajoPracticoPw3.Services
                 var invitacionEliminar = ctx.InvitacionPedido.FirstOrDefault(i => i.IdInvitacionPedido == idInvitacion);
                 ctx.InvitacionPedido.Remove(invitacionEliminar);
             }
-            
-            foreach(var idInvitacionPedidoGustoEmpanadaUsuario in invitacionPedidoGustoEmpanadaUsuarioIds)
+
+            foreach (var idInvitacionPedidoGustoEmpanadaUsuario in invitacionPedidoGustoEmpanadaUsuarioIds)
             {
                 var invitacionPedidoGustoEmpanadaUsuarioEliminar = ctx.InvitacionPedidoGustoEmpanadaUsuario.FirstOrDefault(i => i.IdInvitacionPedidoGustoEmpanadaUsuario == idInvitacionPedidoGustoEmpanadaUsuario);
                 ctx.InvitacionPedidoGustoEmpanadaUsuario.Remove(invitacionPedidoGustoEmpanadaUsuarioEliminar);
@@ -128,7 +128,6 @@ namespace TrabajoPracticoPw3.Services
             ctx.Pedido.Remove(pedido);
             ctx.SaveChanges();
 
-<<<<<<< HEAD
             return pedido.IdPedido;
         }
 
@@ -136,11 +135,11 @@ namespace TrabajoPracticoPw3.Services
         {
             Pedido pedido = ObtenerPedidoById(int.Parse(form["idPedido"]));
 
-            
+
 
             foreach (var gusto in pedido.GustoEmpanada)
             {
-                pedido.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i=> i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault());
+                pedido.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault());
                 try
                 {
                     var cantidadEmpanada = int.Parse(form["gustoEmpanada_" + gusto.IdGustoEmpanada]);
@@ -152,21 +151,18 @@ namespace TrabajoPracticoPw3.Services
                     };
 
                     pedido.InvitacionPedidoGustoEmpanadaUsuario.Add(ipgeu);
-                
+
 
                 }
                 catch (Exception)
                 {
 
-                    
+
                 }
-                
+
             }
-                    ctx.SaveChanges();
+            ctx.SaveChanges();
             return pedido.IdPedido;
-=======
-            return nuevoPedido.IdPedido;
->>>>>>> Vista_Editar_DB
         }
 
         //------------------------------Queries------------------------------
@@ -323,7 +319,7 @@ namespace TrabajoPracticoPw3.Services
             return pedidoEditado;
         }
 
-        internal void ActualizarValoresDeUnPedidoDesdeFormCollection(FormCollection form)
+        public void ActualizarValoresDeUnPedidoDesdeFormCollection(FormCollection form)
         {
             Pedido pedidoEditado = ObtenerPedidoDesdeFormCollection(form);
 
@@ -452,7 +448,6 @@ namespace TrabajoPracticoPw3.Services
             return query;
         }
 
-<<<<<<< HEAD
         public Pedido ObtenerPedidoById(int id)
         {
             Pedido pedido = ctx.Pedido.Find(id);
@@ -470,14 +465,14 @@ namespace TrabajoPracticoPw3.Services
             var query = (from i in ctx.InvitacionPedidoGustoEmpanadaUsuario
                          where i.IdPedido == id && i.IdUsuario == usuarioLogueado.IdUsuario
                          select i).ToList();
-=======
+            return query;
+        }
+
         public Pedido ObtenerPedidoPorId(int id)
         {
             var query = (from p in ctx.Pedido
                          where p.IdPedido == id
                          select p).FirstOrDefault();
->>>>>>> Vista_Editar_DB
-
             return query;
         }
     }
