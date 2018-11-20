@@ -135,11 +135,9 @@ namespace TrabajoPracticoPw3.Services
         {
             Pedido pedido = ObtenerPedidoById(int.Parse(form["idPedido"]));
 
-
-
             foreach (var gusto in pedido.GustoEmpanada)
             {
-                pedido.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault());
+                //pedido.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault());
                 try
                 {
                     var cantidadEmpanada = int.Parse(form["gustoEmpanada_" + gusto.IdGustoEmpanada]);
@@ -147,8 +145,9 @@ namespace TrabajoPracticoPw3.Services
                     {
                         Cantidad = cantidadEmpanada,
                         GustoEmpanada = gusto,
-                        IdUsuario = usuarioLoguedado.IdUsuario
+                        IdUsuario = usuarioLoguedado.IdUsuario,
                     };
+
 
                     pedido.InvitacionPedidoGustoEmpanadaUsuario.Add(ipgeu);
 
@@ -161,6 +160,8 @@ namespace TrabajoPracticoPw3.Services
                 }
 
             }
+            var invitacion = ctx.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault();
+            invitacion.Completado = true;
             ctx.SaveChanges();
             return pedido.IdPedido;
         }
