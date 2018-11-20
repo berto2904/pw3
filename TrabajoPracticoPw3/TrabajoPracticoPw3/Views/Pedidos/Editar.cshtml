@@ -16,6 +16,7 @@
                 <form action="/Pedidos/Editar" method="post">
                     <fieldset>
                         <legend class="header">Tu pedido</legend>
+                        <input type="hidden" name="IdPedido" value="@Model.IdPedido" />
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -103,22 +104,30 @@
                                         </table>
                                         <br />
                                         <select name="invitados" id="invitados" class="form-control multipleSelect" required multiple>
-                                            @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
-                                            {
-                                                foreach (InvitacionPedido invitacionPedido in Model.InvitacionPedido)
+                                            @{
+                                                foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
                                                 {
-                                                    if (usuario.InvitacionPedido.Contains(invitacionPedido))
+                                                    int bandera = 0;
+                                                    foreach (InvitacionPedido invitacionPedido in Model.InvitacionPedido)
                                                     {
-                                                        <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
-                                                        break;
+                                                        if (usuario.IdUsuario == invitacionPedido.IdUsuario)
+                                                        {
+                                                            bandera = 1;
+                                                        }
+                                                        else
+                                                        {
+                                                        }
+                                                    }
+                                                    if (bandera == 1)
+                                                    {
+                                                    <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
                                                     }
                                                     else
                                                     {
-                                                        <option value="@usuario.IdUsuario">@usuario.Email</option>
-                                                        break;
+                                                    <option value="@usuario.IdUsuario">@usuario.Email</option>
+                                                        }
                                                     }
                                                 }
-                                            }
                                         </select>
                                     </div>
 

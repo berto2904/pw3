@@ -121,6 +121,8 @@ namespace TrabajoPracticoPw3.Controllers
 
             List<Usuario> usuariosAEnviarInvitacion = ps.DeterminarEnviosDeInvitacionDesdeFormCollection(form);
 
+            Console.WriteLine(usuariosAEnviarInvitacion);
+
             if(envioInvitacion == 0)
             {
                 // no se envia invitacion
@@ -132,7 +134,10 @@ namespace TrabajoPracticoPw3.Controllers
 
             ps.ActualizarValoresDeUnPedidoDesdeFormCollection(form);
 
-            return View("Lista");
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+            ViewBag.ListaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
+
+            return View("Lista", usuarioLoguedado);
         }
 
         public ActionResult Eliminar(int id)

@@ -145,9 +145,19 @@ namespace TrabajoPracticoPw3.Services
         {
             List<Usuario> usuariosAInvitar = new List<Usuario>();
 
-            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["id"]));
+            List<Usuario> usuariosListados = new List<Usuario>();
 
-            foreach (Usuario usuario in form)
+            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["IdPedido"]));
+
+            int[] invitados = Array.ConvertAll(form.GetValues("invitados"), int.Parse);
+
+            foreach (var usuario in invitados)
+            {
+                Usuario usuarioBuscado = BuscarUsuarioById(usuario);
+                usuariosListados.Add(usuarioBuscado);
+            }
+
+            foreach (Usuario usuario in usuariosListados)
             {
                 foreach (InvitacionPedido invitacionPedido in pedidoAEditar.InvitacionPedido)
                 {
@@ -170,7 +180,7 @@ namespace TrabajoPracticoPw3.Services
         {
             List<Usuario> usuariosAInvitar = new List<Usuario>();
 
-            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["id"]));
+            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["IdPedido"]));
 
             foreach (Usuario usuario in form)
             {
@@ -201,6 +211,7 @@ namespace TrabajoPracticoPw3.Services
         {
             Pedido pedidoEditado = new Pedido
             {
+                IdPedido = int.Parse(form["IdPedido"]),
                 NombreNegocio = form["nombre"],
                 Descripcion = form["descripcion"],
                 PrecioUnidad = int.Parse(form["precioUnidad"]),
@@ -208,7 +219,7 @@ namespace TrabajoPracticoPw3.Services
                 FechaCreacion = DateTime.Now,
                 //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
                 //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
-                EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
+                //EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
             };
             return pedidoEditado;
         }
@@ -217,17 +228,92 @@ namespace TrabajoPracticoPw3.Services
         {
             Pedido pedidoEditado = ObtenerPedidoDesdeFormCollection(form);
 
-            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["id"]));
+            Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["idPedido"]));
+
+            int[] gustosDisponibles = Array.ConvertAll(form.GetValues("gustosDisponibles"), int.Parse);
+            int[] invitados = Array.ConvertAll(form.GetValues("invitados"), int.Parse);
+
+
+            // Tratamiento Gustos Empanada
+            List<GustoEmpanada> gustosEmpanada = new List<GustoEmpanada>();
+
+            foreach (int gusto in gustosDisponibles)
+            {
+                GustoEmpanada gustoEmp = BuscarGustoPorId(gusto);
+                gustosEmpanada.Add(gustoEmp);
+            }
+
+            foreach (GustoEmpanada gusto in gustosEmpanada)
+            {
+                if (pedidoAEditar.GustoEmpanada.Contains(gusto))
+                {
+                }
+                else
+                {
+                    GustoEmpanada gustoEncontrado = ctx.GustoEmpanada.SingleOrDefault(x => x.IdGustoEmpanada == gusto.IdGustoEmpanada);
+                    pedidoAEditar.GustoEmpanada.Add(gustoEncontrado);
+                }
+            }
+
+            // Tratamiento Invitados
+            List<Usuario> invitadosLista = new List<Usuario>();
+
+            foreach (int usuarios in invitados)
+            {
+                Usuario user = BuscarUsuarioById(usuarios);
+                invitadosLista.Add(user);
+            }
+
+            List<InvitacionPedido> invitaciones = new List<InvitacionPedido>();
+
+            foreach (var invitacion in pedidoAEditar.InvitacionPedido)
+            {
+                invitaciones.Add(invitacion);
+            }
+
+            foreach (Usuario usuario in invitadosLista)
+            {
+                foreach (InvitacionPedido invitacionPedido in invitaciones)
+                {
+                    if (usuario.IdUsuario == invitacionPedido.IdUsuario)
+                    ///if (usuario.InvitacionPedido.Contains(invitacionPedido))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Usuario invitadoEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == usuario.IdUsuario);
+
+                        InvitacionPedido invitacionPedidoNueva = new InvitacionPedido
+                        {
+                            Pedido = pedidoAEditar,
+                            Usuario = invitadoEncontrado,
+                            Token = new Guid(new Md5Hash().GetMD5((invitadoEncontrado.Email + pedidoAEditar.FechaCreacion))),
+                            Completado = false,
+                        };
+                        ctx.InvitacionPedido.Add(invitacionPedidoNueva);
+
+                        break;
+                    }
+                }
+            }
+
 
             pedidoAEditar.Descripcion = pedidoEditado.Descripcion;
-            pedidoAEditar.GustoEmpanada = pedidoEditado.GustoEmpanada;
-            pedidoAEditar.InvitacionPedido = pedidoEditado.InvitacionPedido;
-            pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario = pedidoEditado.InvitacionPedidoGustoEmpanadaUsuario;
+            //pedidoAEditar.GustoEmpanada = pedidoEditado.GustoEmpanada;
+            //pedidoAEditar.InvitacionPedido = pedidoEditado.InvitacionPedido;
+            //pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario = pedidoEditado.InvitacionPedidoGustoEmpanadaUsuario;
             pedidoAEditar.NombreNegocio = pedidoEditado.NombreNegocio;
             pedidoAEditar.PrecioDocena = pedidoEditado.PrecioDocena;
             pedidoAEditar.PrecioUnidad = pedidoEditado.PrecioUnidad;
 
             ctx.SaveChanges();
+        }
+
+        private GustoEmpanada BuscarGustoPorId(int idGusto)
+        {
+            GustoEmpanada gustoEmpanada = ctx.GustoEmpanada.Find(idGusto);
+            return gustoEmpanada;
         }
 
         public int ObtenerEnviarInvitacion(FormCollection form)
