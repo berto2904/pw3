@@ -33,10 +33,19 @@
                                     <input type="hidden" name="idPedido" value="@Model.IdPedido" />
                                     <label for="NombreNegocio" class="lead">Gusto de empanadas</label>
                                     
+
                                     @foreach (var gusto in Model.GustoEmpanada)
                                     {
                                         <p clas="form-control-lg">@gusto.Nombre</p>
+                                        if (Model.InvitacionPedidoGustoEmpanadaUsuario.Where(x=>x.IdUsuario == ViewBag.IdUsuario && x.IdPedido == Model.IdPedido && x.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
+                                        {
+                                            <input  class="form-control" type="number" name="gustoEmpanada_@gusto.IdGustoEmpanada" value="@Model.InvitacionPedidoGustoEmpanadaUsuario.Where(x=>x.IdPedido == Model.IdPedido && x.IdUsuario == ViewBag.IdUsuario && x.IdGustoEmpanada == gusto.IdGustoEmpanada).First().Cantidad"/>
+                                        }
+                                        else
+                                        {
                                         <input  class="form-control" type="number" name="gustoEmpanada_@gusto.IdGustoEmpanada" value=""/>
+
+                                        }
                                     }
                                 </div>
                             </div>

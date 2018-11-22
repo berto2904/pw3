@@ -137,27 +137,43 @@ namespace TrabajoPracticoPw3.Services
 
             foreach (var gusto in pedido.GustoEmpanada)
             {
-                //pedido.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault());
+
+                if (pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(p => p.IdUsuario == usuarioLoguedado.IdUsuario && p.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
+                {
+                    ctx.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario && i.IdPedido == pedido.IdPedido).FirstOrDefault());
+                    //TODO: Encontrar la forma de que se updatee el registro
+                }
+
                 try
                 {
                     var cantidadEmpanada = int.Parse(form["gustoEmpanada_" + gusto.IdGustoEmpanada]);
-                    InvitacionPedidoGustoEmpanadaUsuario ipgeu = new InvitacionPedidoGustoEmpanadaUsuario
+                    if (cantidadEmpanada != 0)
                     {
-                        Cantidad = cantidadEmpanada,
-                        GustoEmpanada = gusto,
-                        IdUsuario = usuarioLoguedado.IdUsuario,
-                    };
+
+                        InvitacionPedidoGustoEmpanadaUsuario ipgeu = new InvitacionPedidoGustoEmpanadaUsuario
+                        {
+                            Cantidad = cantidadEmpanada,
+                            GustoEmpanada = gusto,
+                            IdUsuario = usuarioLoguedado.IdUsuario,
+                        };
 
 
-                    pedido.InvitacionPedidoGustoEmpanadaUsuario.Add(ipgeu);
+                        pedido.InvitacionPedidoGustoEmpanadaUsuario.Add(ipgeu);
+                    }
 
 
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-
+                    if (pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(p => p.IdUsuario == usuarioLoguedado.IdUsuario && p.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
+                    {
+                        ctx.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == usuarioLoguedado.IdUsuario && i.IdPedido == pedido.IdPedido).FirstOrDefault());
+                    }
+                    Console.WriteLine(e);
 
                 }
+
+
 
             }
             var invitacion = ctx.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault();

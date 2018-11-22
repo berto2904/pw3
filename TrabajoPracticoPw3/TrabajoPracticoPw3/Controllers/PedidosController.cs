@@ -88,6 +88,11 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Editar(int id)
         {
             //ValidarUsuarioSesion();
+            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
 
             Pedido PedidoAEditar = ps.ObtenerPedidoPorId(id);
 
@@ -95,12 +100,6 @@ namespace TrabajoPracticoPw3.Controllers
             {
                 TempData["mensaje"] = "El pedido se encuentra Cerrado";
                 return RedirectToAction("Detalle");
-            }
-     
-            if (!ps.PedidoUsuarioResponsableIsTrue(id, usuarioLoguedado))
-            {
-                TempData["mensaje"] = "Acceso invalido";
-                return RedirectToAction("Error", "Home");
             }
 
             ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
@@ -158,6 +157,7 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Error","Home");
             }
             Pedido pedido = ps.ObtenerPedidoById(id);
+            ViewBag.IdUsuario = usuarioLoguedado.IdUsuario;
             return View(pedido);
         }
 
