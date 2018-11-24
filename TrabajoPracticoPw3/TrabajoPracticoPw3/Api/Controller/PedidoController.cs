@@ -49,6 +49,7 @@ namespace TrabajoPracticoPw3.Api
         public string ConfirmarGustos([FromBody] InvitacionGustoJson model)
         {
             string json = JsonConvert.SerializeObject(model);
+            //TODO: Continuar con el llamado a los servicios
             return json;
         }
 
