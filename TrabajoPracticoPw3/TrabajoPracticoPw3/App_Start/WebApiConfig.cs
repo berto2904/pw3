@@ -18,6 +18,11 @@ namespace TrabajoPracticoPw3
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                    name: "Action",
+                    routeTemplate: "api/{controller}/{action}"
+                    );
         }
     }
 }

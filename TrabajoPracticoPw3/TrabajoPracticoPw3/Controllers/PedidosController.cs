@@ -158,6 +158,7 @@ namespace TrabajoPracticoPw3.Controllers
             }
             Pedido pedido = ps.ObtenerPedidoById(id);
             ViewBag.IdUsuario = usuarioLoguedado.IdUsuario;
+            ViewBag.TokenInvitacion = pedido.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault().Token.ToString();
             return View(pedido);
         }
 

@@ -168,6 +168,7 @@
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\images\3empanadas.jpg" />
+    <Content Include="Content\js\Elegir.js" />
     <Content Include="Content\js\Iniciar.js" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\templateEmpanada\css\half-slider.css" />
@@ -293,7 +294,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\PedidoController.cs" />
+    <Compile Include="Api\Controller\PedidoController.cs" />
+    <Compile Include="Api\Model\GustoEmpanadaJson.cs" />
+    <Compile Include="Api\Model\InvitacionGustoJson.cs" />
+    <Compile Include="Api\Model\MensajeJson.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
