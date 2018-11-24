@@ -87,6 +87,7 @@ namespace TrabajoPracticoPw3.Services
 
         public int EliminarService(int id)
         {
+            //TODO: Mostrar por pantalla el pedido y la cantidad de invitados
             Pedido pedido = ObtenerPedidoById(id);
             List<int> gustoEmpanadasIds = new List<int>();
             List<int> invitacionPedidoIds = new List<int>();
