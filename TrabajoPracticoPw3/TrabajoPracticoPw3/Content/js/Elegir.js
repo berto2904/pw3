@@ -26,7 +26,10 @@ $('#btnConfirmarGustos').click(function () {
         data: JSON.stringify(invitacion),
         contentType: 'application/json; charset=utf-8',
         success: function (result) {
-            $("#div1").html(result);
+            var mensajeResult = JSON.parse(result);
+            $('#headerResultado').html(mensajeResult.Resultado);
+            $('#mensajeGustos').html(mensajeResult.Mensaje);
+            $("#confirmacionGustosModal").modal();
             }
     });
 });

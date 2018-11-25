@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TrabajoPracticoPw3.Api.Model;
 using TrabajoPracticoPw3.Helper;
 using TrabajoPracticoPw3.Models;
 namespace TrabajoPracticoPw3.Services
@@ -183,6 +184,68 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+        //TODO: Elegir service por json
+        public MensajeJson ElegirServiceByJson(InvitacionGustoJson invitacionJson)
+        {
+            Pedido pedido = ObtenerPedidoById(ctx.InvitacionPedido.Where(t => t.Token == invitacionJson.Token && t.IdUsuario == invitacionJson.IdUsuario).FirstOrDefault().IdPedido);
+            MensajeJson msjJson = new MensajeJson();
+
+            if (pedido.EstadoPedido.Nombre == "Cerrado")
+            {
+                msjJson.Resultado = "ERROR";
+                msjJson.Mensaje = "No se pudo efectuar la operacion porque el pedido se ecnuentra cerrado";
+                return msjJson;
+            }
+            foreach (var gusto in pedido.GustoEmpanada)
+            {
+
+                if (pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(p => p.IdUsuario == invitacionJson.IdUsuario && p.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
+                {
+                    ctx.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == invitacionJson.IdUsuario && i.IdPedido == pedido.IdPedido).FirstOrDefault());
+                    //TODO: Encontrar la forma de que se updatee el registro
+                }
+
+                try
+                {
+                    var cantidadEmpanada = invitacionJson.GustosEmpanadasCantidad.Where(c => c.IdGustoEmpanada == gusto.IdGustoEmpanada).FirstOrDefault().Cantidad;
+                    if (cantidadEmpanada != 0)
+                    {
+
+                        InvitacionPedidoGustoEmpanadaUsuario ipgeu = new InvitacionPedidoGustoEmpanadaUsuario
+                        {
+                            Cantidad = cantidadEmpanada,
+                            GustoEmpanada = gusto,
+                            IdUsuario = invitacionJson.IdUsuario,
+                        };
+
+
+                        pedido.InvitacionPedidoGustoEmpanadaUsuario.Add(ipgeu);
+                    }
+
+
+                }
+                catch (Exception e)
+                {
+                    if (pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(p => p.IdUsuario == invitacionJson.IdUsuario && p.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
+                    {
+                        ctx.InvitacionPedidoGustoEmpanadaUsuario.Remove(ctx.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == invitacionJson.IdUsuario && i.IdPedido == pedido.IdPedido).FirstOrDefault());
+                    }
+                    msjJson.Resultado = "ERROR";
+                    msjJson.Mensaje = "No se pudo efectuar la operacion porque "+e.ToString();
+                    return msjJson;
+
+                }
+
+
+
+            }
+            var invitacion = ctx.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == invitacionJson.IdUsuario).FirstOrDefault();
+            invitacion.Completado = true;
+            ctx.SaveChanges();
+            msjJson.Resultado = "OK";
+            msjJson.Mensaje = "Gustos elegidos satisfactoriamente";
+            return msjJson;
+        }
         //------------------------------Queries------------------------------
 
         public List<Pedido> ListarPedidosByUsuario(Usuario usuario)

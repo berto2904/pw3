@@ -8,6 +8,7 @@ using TrabajoPracticoPw3.Models;
 using Newtonsoft.Json;
 using System.Web.Http.Cors;
 using TrabajoPracticoPw3.Api.Model;
+using TrabajoPracticoPw3.Services;
 
 namespace TrabajoPracticoPw3.Api
 {
@@ -21,6 +22,8 @@ namespace TrabajoPracticoPw3.Api
         //}
 
         TPEntities ctx = new TPEntities();
+        PedidoService ps = new PedidoService();
+
         //GET api/values
         //public string Get()
         //{
@@ -48,9 +51,8 @@ namespace TrabajoPracticoPw3.Api
         [HttpPost]
         public string ConfirmarGustos([FromBody] InvitacionGustoJson model)
         {
-            string json = JsonConvert.SerializeObject(model);
-            //TODO: Continuar con el llamado a los servicios
-            return json;
+            MensajeJson mensajeJson = ps.ElegirServiceByJson(model);
+            return JsonConvert.SerializeObject(mensajeJson);
         }
 
         // GET api/values/5

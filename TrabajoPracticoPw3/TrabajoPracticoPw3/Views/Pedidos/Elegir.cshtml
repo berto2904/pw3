@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="well well-sm">
                 @*@using (Html.BeginForm())
-                {*@
+                    {*@
                 <form action="/Pedidos/elegir" method="post">
                     <fieldset>
                         <legend class="header">Elige Gustos</legend>
@@ -18,7 +18,7 @@
                                 <div class="form-group">
                                     <label class="lead"> Nombre de Negocio</label>
                                     <p class="form-control-lg">@Model.NombreNegocio</p>
-                                    
+
                                     <label class="lead"> Descripcion</label>
                                     <p class="form-control-lg">@Model.Descripcion</p>
                                     <label class="lead"> Precio por Unidad</label>
@@ -34,18 +34,18 @@
                                     <input type="hidden" id="Token" name="token" value="@ViewBag.TokenInvitacion" />
                                     <input type="hidden" id="IdUsuario" name="IdUsuario" value="@ViewBag.IdUsuario" />
                                     <label for="NombreNegocio" class="lead">Gusto de empanadas</label>
-                                    
+
 
                                     @foreach (var gusto in Model.GustoEmpanada)
                                     {
                                         <p clas="form-control-lg">@gusto.Nombre</p>
-                                        if (Model.InvitacionPedidoGustoEmpanadaUsuario.Where(x=>x.IdUsuario == ViewBag.IdUsuario && x.IdPedido == Model.IdPedido && x.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
+                                        if (Model.InvitacionPedidoGustoEmpanadaUsuario.Where(x => x.IdUsuario == ViewBag.IdUsuario && x.IdPedido == Model.IdPedido && x.IdGustoEmpanada == gusto.IdGustoEmpanada).Count() > 0)
                                         {
-                                            <input  class="cantidad form-control" type="number" id="@gusto.IdGustoEmpanada" name="gustoEmpanada_@gusto.IdGustoEmpanada" value="@Model.InvitacionPedidoGustoEmpanadaUsuario.Where(x=>x.IdPedido == Model.IdPedido && x.IdUsuario == ViewBag.IdUsuario && x.IdGustoEmpanada == gusto.IdGustoEmpanada).First().Cantidad"/>
+                                            <input class="cantidad form-control" type="number" id="@gusto.IdGustoEmpanada" name="gustoEmpanada_@gusto.IdGustoEmpanada" value="@Model.InvitacionPedidoGustoEmpanadaUsuario.Where(x=>x.IdPedido == Model.IdPedido && x.IdUsuario == ViewBag.IdUsuario && x.IdGustoEmpanada == gusto.IdGustoEmpanada).First().Cantidad" />
                                         }
                                         else
                                         {
-                                            <input  class="cantidad form-control" type="number" id="@gusto.IdGustoEmpanada" name="gustoEmpanada_@gusto.IdGustoEmpanada" value=""/>
+                                            <input class="cantidad form-control" type="number" id="@gusto.IdGustoEmpanada" name="gustoEmpanada_@gusto.IdGustoEmpanada" value="" />
                                         }
                                     }
                                 </div>
@@ -64,4 +64,24 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="confirmacionGustosModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="headerResultado">OK</h4>
+            </div>
+            <div class="modal-body">
+                <p id="mensajeGustos"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Gracias</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
