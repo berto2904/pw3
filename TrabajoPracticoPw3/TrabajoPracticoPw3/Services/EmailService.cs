@@ -16,7 +16,7 @@ namespace TrabajoPracticoPw3.Services
         {
                 MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
                 email.Subject = "Te invitó "+ invitacion.Pedido.Usuario.Email+" para pedir empanadas";
-                email.Body = "Has sido invitado para realizar un pedido de empanadas http://localhost:50846//pedidos/elegir/" + invitacion.Token;
+                email.Body = "Has sido invitado para realizar un pedido de empanadas http://localhost:50846/pedidos/elegir/" + invitacion.Token;
 
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(email);
