@@ -99,6 +99,7 @@ namespace TrabajoPracticoPw3.Controllers
             if (PedidoAEditar.EstadoPedido.Nombre=="Cerrado")
             {
                 TempData["mensaje"] = "El pedido se encuentra Cerrado";
+                //TODO: Crear pantalla detalle
                 return RedirectToAction("Detalle");
             }
 
@@ -186,6 +187,14 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Login", "Home");
             }
             return null;
+        }
+
+        [HttpPost]
+        public ActionResult Finalizar(int id)
+        {
+            ps.FinalizarPedidoPorId(id);
+
+            return RedirectToAction("Lista");
         }
 
     }
