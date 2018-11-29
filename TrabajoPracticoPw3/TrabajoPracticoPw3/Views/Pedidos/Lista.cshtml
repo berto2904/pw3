@@ -1,10 +1,12 @@
 ﻿@using TrabajoPracticoPw3.Models
+@model PagedList.IPagedList<Pedido>
+@using PagedList.Mvc
 @{
     ViewBag.Title = "Lista";
     Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
 }
 
-<h2>Bienvenido @Model.Email</h2>
+<h2>Bienvenido @ViewBag.Usuario.Email</h2>
 
 <table class="table table-hover">
     <thead>
@@ -20,13 +22,13 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Pedido pedido in ViewBag.ListaPedidos)
+        @foreach (var pedido in Model)
         {
             <tr>
                 <td>@pedido.FechaCreacion</td>
                 <td>@pedido.NombreNegocio</td>
                 <td>@pedido.EstadoPedido.Nombre</td>
-                @if (pedido.IdUsuarioResponsable == Model.IdUsuario)
+                @if (pedido.IdUsuarioResponsable == ViewBag.Usuario.IdUsuario)
                 {
                     <td>Responsable</td>
                     <td><a href="/Pedidos/Editar/@pedido.IdPedido" class="btn btn-warning">Editar Pedido</a></td>
@@ -49,6 +51,11 @@
         }
     </tbody>
 </table>
+
+<div class="pageCount">
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+</div>
+@Html.PagedListPager(Model, pagePos => Url.Action("Lista", new { pagePos }))
 
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="/Pedidos/Iniciar" class="btn btn-success">Iniciar Pedido</a>

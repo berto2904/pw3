@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using TrabajoPracticoPw3.Models;
 using TrabajoPracticoPw3.Services;
+using PagedList;
 
 namespace TrabajoPracticoPw3.Controllers
 {
@@ -71,13 +72,15 @@ namespace TrabajoPracticoPw3.Controllers
             return View(ps.ObtenerPedidoById(id));
         }
 
-        public ActionResult Lista()
+        public ActionResult Lista(int? pagePos)
         {
+            int pageNumber = (pagePos ?? 1);
             try
             {
                 usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
-                ViewBag.ListaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
-                return View(usuarioLoguedado);
+                List<Pedido> listaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
+                ViewBag.Usuario = usuarioLoguedado;
+                return View(listaPedidos.ToPagedList(pageNumber, 5));
             }
             catch (TargetException)
             {
