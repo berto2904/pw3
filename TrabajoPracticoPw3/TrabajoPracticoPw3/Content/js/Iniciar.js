@@ -14,15 +14,33 @@ $(document).on("click", ".botonEliminar", function (event) {
         success: function (result) {
             var resultadoJson = JSON.parse(result);
             var cantidad = parseInt(resultadoJson.CantidadInvitados) > 1 ? "invitaciones confirmadas" : "invitacion confirmada";
+            var mensajePosEliminar = "Pedido " + resultadoJson.NombreNegocio+ " ha sido eliminado exitosamente"
             var mensaje = "Estas seguro de eliminar el pedido " + resultadoJson.NombreNegocio + "</br> Actualmente posee " + resultadoJson.CantidadInvitados + " " + cantidad;
             $('#mensajeEliminar').html(mensaje);
-            var mensajePosEliminar = "Pedido" + resultadoJson.NombreNegocio+ "ha sido eliminado exitosamente"
-            $(".modal-footer #btnEliminarPedido").attr("href", "/Pedidos/Eliminar/" + idPedido);    
-            $('.modal-footer #btnEliminarPedido').click(function () {
-                $("#confirmacionEliminarModal").modal();
+            $('#mensaje').html(mensajePosEliminar);
 
+            $('.modal-footer #btnEliminarPedido').click(function () {
+                $("#EliminarModal").modal('toggle');
+                eliminarFnc(idPedido);
             });
+
+            //$(".modal-footer #btnEliminarPedido").attr("href", "/Pedidos/Eliminar/" + idPedido);    
         }
     });
 
+});
+
+function eliminarFnc(idPedido) {
+    $.ajax({
+        url: "/Pedidos/Eliminar/",
+        method: "GET",
+        data: { id: idPedido },
+        success: function (result) {
+            $("#confirmacionEliminarModal").modal();
+        }
+    });
+}
+
+$('#graciasId').click(function () {
+    location.reload();
 });
