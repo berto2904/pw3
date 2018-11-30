@@ -12,16 +12,18 @@ namespace TrabajoPracticoPw3.Controllers
     public class HomeController : Controller
     {
         HomeService hs = new HomeService();
-
+        static string redirectActionDefault;
         // GET: Home
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Login()
+        public ActionResult Login(string redirigir)
         {
-            if(Session["usuario"] != null)
+            redirectActionDefault = redirigir;
+
+            if (Session["usuario"] != null)
             {
                 return RedirectToAction("Lista", "Pedidos");
             }
@@ -37,6 +39,22 @@ namespace TrabajoPracticoPw3.Controllers
             if (usuarioEncontrado != null)
             {
                 Session["usuario"] = usuarioEncontrado.IdUsuario;
+                if (redirectActionDefault != null)
+                {
+                    try
+                    {
+                        string[] splited = redirectActionDefault.Split('/');
+                        if (splited[3] == null)
+                        {
+                            return RedirectToAction(splited[2], splited[1]);
+                        }
+                        return RedirectToAction(splited[2], splited[1], new {id= splited[3]});
+                    }
+                    catch (IndexOutOfRangeException ex)
+                    {
+                        throw new Exception("El indice está fuera de rango", ex);
+                    }
+                }
                 return RedirectToAction("Lista","Pedidos");
                 //return RedirectToAction("Lista","Pedidos",new { idUsuario = Session["usuario"] });
             }
