@@ -196,7 +196,7 @@ namespace TrabajoPracticoPw3.Controllers
             return null;
         }
 
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Finalizar(int id)
         {
             ps.FinalizarPedidoPorId(id);
