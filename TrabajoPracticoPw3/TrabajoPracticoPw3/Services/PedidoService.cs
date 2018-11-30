@@ -595,7 +595,7 @@ namespace TrabajoPracticoPw3.Services
         {
             Pedido pedidoAFinalizar = ObtenerPedidoById(id);
 
-            pedidoAFinalizar.EstadoPedido.IdEstadoPedido = 2;
+            pedidoAFinalizar.EstadoPedido = ctx.EstadoPedido.Where(e => e.IdEstadoPedido == 2).FirstOrDefault();
 
             ctx.SaveChanges();
         }
