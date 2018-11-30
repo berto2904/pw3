@@ -309,7 +309,7 @@ namespace TrabajoPracticoPw3.Services
             return false;
         }
 
-        internal List<Usuario> DeterminarEnviosDeInvitacionDesdeFormCollection(FormCollection form)
+        public List<Usuario> DeterminarEnviosDeInvitacionDesdeFormCollection(FormCollection form)
         {
             int IdEnviarInvitacion = ObtenerEnviarInvitacion(form);
 
