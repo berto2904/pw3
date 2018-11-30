@@ -26,7 +26,7 @@ namespace TrabajoPracticoPw3.Controllers
         {
             if (Session["usuario"] == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Iniciar/"});
             }
             //ViewBag.ListaDeGustos = new MultiSelectList(ps.ObtenerGustoDeEmpanadasList(), "IdGustoEmpanada", "Nombre");
             //ViewBag.ListaDeUsuarios = new MultiSelectList(ps.ObtenerUsuarioList(), "IdUsuario", "Email");
@@ -51,7 +51,7 @@ namespace TrabajoPracticoPw3.Controllers
         {
             if (Session["usuario"] == null)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Iniciar/"+id });
             }
             return View();
         }
@@ -102,6 +102,7 @@ namespace TrabajoPracticoPw3.Controllers
             if (PedidoAEditar.EstadoPedido.Nombre=="Cerrado")
             {
                 TempData["mensaje"] = "El pedido se encuentra Cerrado";
+                //TODO: Crear pantalla detalle
                 return RedirectToAction("Detalle");
             }
 
@@ -154,6 +155,11 @@ namespace TrabajoPracticoPw3.Controllers
 
        public ActionResult Elegir(int id)
         {
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home", new {redirigir = "/Pedidos/Elegir/"+id});
+            }
+
             if (!ps.InvitacionPedidoUsuarioIsTrue(id, usuarioLoguedado))
             {
                 TempData["mensaje"] = "Acceso invalido";
@@ -189,6 +195,14 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Login", "Home");
             }
             return null;
+        }
+
+        [HttpPost]
+        public ActionResult Finalizar(int id)
+        {
+            ps.FinalizarPedidoPorId(id);
+
+            return RedirectToAction("Lista");
         }
 
     }

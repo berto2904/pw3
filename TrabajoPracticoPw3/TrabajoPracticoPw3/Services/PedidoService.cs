@@ -579,5 +579,14 @@ namespace TrabajoPracticoPw3.Services
                          select p).FirstOrDefault();
             return query;
         }
+
+        public void FinalizarPedidoPorId(int id)
+        {
+            Pedido pedidoAFinalizar = ObtenerPedidoById(id);
+
+            pedidoAFinalizar.EstadoPedido.IdEstadoPedido = 2;
+
+            ctx.SaveChanges();
+        }
     }
 }

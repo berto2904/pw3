@@ -62,8 +62,8 @@
                                     </select>
 
                                     @*if (currentStatus=="Completed"){
-                    selStatus.options[1].selected=true;
-                    }*@
+                                        selStatus.options[1].selected=true;
+                                        }*@
 
                                     @*@Html.DropDownListFor(p => p.GustoEmpanada, ViewBag.ListaDeGustos as MultiSelectList, new { @id = "gustosDisponibles", @class = "form-control multipleSelect", multiple = "multiple" })*@
                                 </div>
@@ -120,14 +120,14 @@
                                                     }
                                                     if (bandera == 1)
                                                     {
-                                                    <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
+                                                        <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
                                                     }
                                                     else
                                                     {
-                                                    <option value="@usuario.IdUsuario">@usuario.Email</option>
-                                                        }
+                                                        <option value="@usuario.IdUsuario">@usuario.Email</option>
                                                     }
                                                 }
+                                            }
                                         </select>
                                     </div>
 
@@ -135,7 +135,7 @@
                                 </div>
                             </div>
                         </div>
-<hr />
+                        <hr />
                         <div style="display:flex;justify-content:center;align-items:center;">
                             <div class="col-sm-6" style="text-align:right">Enviar invitacion:</div>
                             <div class="col-sm-6" style="text-align:left">
@@ -149,12 +149,38 @@
                         </div>
                         <hr />
                         <div class="btn-toolbar d-flex justify-content-around">
+                            @*<a href="/Pedidos/Finalizar/@Model.IdPedido" class="btn btn-warning">Finalizar</a>*@
+                            <a id=@Model.IdPedido data-toggle="modal" data-target="#FinalizarModal" data-id="@Model.IdPedido" class="btn btn-lg btn-danger">Finalizar</a>
                             <button type="submit" class="btn btn-Info btn-lg">Guardar</button>
                         </div>
-
+                        <!-- TODO: Agregar boton "Finalizar Pedido"-->
                     </fieldset>
                 </form>
                 @*}*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* ---------------------Modal finalizar--------------------- *@
+<div class="modal fade" id="FinalizarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Finalizar Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de finalizar el pedido?</p>
+                <p>Tenga en cuenta que si finaliza el pedido no podrá editarlo mas adelante.</p>
+                <p>Tampoco usted ni sus invitados podrán modificar la elección de gustos.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="/Pedidos/Finalizar/@Model.IdPedido" class="btn btn-danger">Finalizar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
