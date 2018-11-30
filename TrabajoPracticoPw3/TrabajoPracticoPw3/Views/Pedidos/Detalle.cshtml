@@ -1,0 +1,187 @@
+﻿@using TrabajoPracticoPw3.Models
+@model TrabajoPracticoPw3.Models.Pedido
+
+@{
+    Layout = "~/Views/Shared/_UsuarioLayout.cshtml";
+    ViewBag.Title = "Iniciar";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well well-sm">
+                @*@using (Html.BeginForm())
+                    {*@
+                <form action="/Pedidos/Editar" method="post">
+                    <fieldset>
+                        <legend class="header">Tu pedido</legend>
+                        <input type="hidden" name="IdPedido" value="@Model.IdPedido" />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <p>Nombre de Negocio</p>
+                                    <p>@Model.NombreNegocio</p>
+                                    @*@Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control", @id = "nombre" })*@
+                                </div>
+
+                                <div class="form-group">
+                                    <p>Descripcion</p>
+                                    <p>@Model.Descripcion</p>
+                                    @*@Html.TextAreaFor(p => p.Descripcion, new { @class = "form-control", @id = "descripcion" })*@
+                                </div>
+
+                                <div class="form-group">
+                                    <p>Precio Unidad</p>
+                                    <p>@Model.PrecioUnidad</p>
+                                    @*@Html.TextBoxFor(m => m.PrecioUnidad, new { @class = "form-control", @id = "precioUnidad", type = "number", min = "0" })*@
+                                </div>
+
+                                <div class="form-group">
+                                    <p>Precio Docena</p>
+                                    <p>@Model.PrecioDocena</p>
+                                    @*@Html.TextBoxFor(m => m.PrecioDocena, new { @class = "form-control", @id = "precioDocena", type = "number", min = "0" })*@
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="NombreNegocio">Gusto de empanadas</label>
+                                    <select name="gustosDisponibles" id="gustosDisponibles" class="form-control multipleSelect" required multiple>
+                                        @foreach (GustoEmpanada gusto in ViewBag.ListaDeGustos)
+                                        {
+                                            if (Model.GustoEmpanada.Contains(gusto))
+                                            {
+                                                <option value="@gusto.IdGustoEmpanada" selected>@gusto.Nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@gusto.IdGustoEmpanada">@gusto.Nombre</option>
+                                            }
+                                        }
+                                    </select>
+
+                                    @*if (currentStatus=="Completed"){
+                                        selStatus.options[1].selected=true;
+                                        }*@
+
+                                    @*@Html.DropDownListFor(p => p.GustoEmpanada, ViewBag.ListaDeGustos as MultiSelectList, new { @id = "gustosDisponibles", @class = "form-control multipleSelect", multiple = "multiple" })*@
+                                </div>
+                                <div class="form-group">
+                                    <label for="NombreNegocio">Invitados</label>
+                                    <div class="form-group">
+                                        <table class="table-borderless tab-pane">
+                                            <tr>
+                                                <th>Usuario</th>
+                                                <th>Eligio gustos?</th>
+                                            </tr>
+                                            @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
+                                            {
+                                                <tr>
+                                                    <td>@usuario.Email</td>
+                                                    @if (Model.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                                                    {
+                                                        <td> (NO) </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in Model.InvitacionPedidoGustoEmpanadaUsuario)
+                                                        {
+                                                            if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
+                                                            {
+                                                                <td> (SI) </td>
+                                                                break;
+                                                            }
+                                                            else
+                                                            {
+                                                                <td> (NO) </td>
+                                                                break;
+                                                            }
+                                                        }
+                                                    }
+                                                </tr>
+                                            }
+                                        </table>
+                                        <br />
+                                        <select name="invitados" id="invitados" class="form-control multipleSelect" required multiple>
+                                            @{
+                                                foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
+                                                {
+                                                    int bandera = 0;
+                                                    foreach (InvitacionPedido invitacionPedido in Model.InvitacionPedido)
+                                                    {
+                                                        if (usuario.IdUsuario == invitacionPedido.IdUsuario)
+                                                        {
+                                                            bandera = 1;
+                                                        }
+                                                        else
+                                                        {
+                                                        }
+                                                    }
+                                                    if (bandera == 1)
+                                                    {
+                                                        <option value="@usuario.IdUsuario" selected>@usuario.Email</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@usuario.IdUsuario">@usuario.Email</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+
+                                    @*@Html.DropDownListFor(p => p., ViewBag.ListaDeUsuarios as MultiSelectList, new { @id = "invitados", @class = "form-control multipleSelect", multiple = "multiple" })*@
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div style="display:flex;justify-content:center;align-items:center;">
+                            <div class="col-sm-6" style="text-align:right">Enviar invitacion:</div>
+                            <div class="col-sm-6" style="text-align:left">
+                                <SELECT NAME="enviarInvitacion" id="invitacion" class="form-control" required>
+                                    <OPTION VALUE="1">A nadie</OPTION>
+                                    <OPTION VALUE="2">Re-Enviar invitacion a todos</OPTION>
+                                    <OPTION VALUE="3">Enviar solo a los nuevos</OPTION>
+                                    <OPTION VALUE="4">Re-Enviar solo a los que no eligieron gustos</OPTION>
+                                </SELECT>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="btn-toolbar d-flex justify-content-around">
+                            @*<a href="/Pedidos/Finalizar/@Model.IdPedido" class="btn btn-warning">Finalizar</a>*@
+                            <a id=@Model.IdPedido data-toggle="modal" data-target="#FinalizarModal" data-id="@Model.IdPedido" class="btn btn-lg btn-danger">Finalizar</a>
+                            <button type="submit" class="btn btn-Info btn-lg">Guardar</button>
+                        </div>
+                        <!-- TODO: Agregar boton "Finalizar Pedido"-->
+                    </fieldset>
+                </form>
+                @*}*@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* ---------------------Modal finalizar--------------------- *@
+<div class="modal fade" id="FinalizarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Finalizar Pedido</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>¿Estas seguro de finalizar el pedido?</p>
+                <p>Tenga en cuenta que si finaliza el pedido no podrá editarlo mas adelante.</p>
+                <p>Tampoco usted ni sus invitados podrán modificar la elección de gustos.</p>
+            </div>
+            <div class="modal-footer">
+                <a href="/Pedidos/Finalizar/@Model.IdPedido" class="btn btn-danger">Finalizar</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
