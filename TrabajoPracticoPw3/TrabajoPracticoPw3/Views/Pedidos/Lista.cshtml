@@ -75,14 +75,35 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                ¿Estas seguro de eliminar el pedido?
+            <div class="modal-body" id="mensajeEliminar">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 @*<button type="button" class="btn btn-primary">Save changes</button>*@
-                <a id="idPedido" class="btn btn-danger">Eliminar</a>
+                <a id="btnEliminarPedido" class="btn btn-danger">Eliminar</a>
             </div>
         </div>
     </div>
 </div>
+
+
+@* ---------------------Modal Mensaje--------------------- *@
+<div class="modal fade" id="confirmacionEliminarModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="headerResultado">OK</h4>
+            </div>
+            <div class="modal-body">
+                <p id="mensajeGustos"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Gracias</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

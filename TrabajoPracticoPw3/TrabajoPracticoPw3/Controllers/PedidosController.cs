@@ -113,9 +113,8 @@ namespace TrabajoPracticoPw3.Controllers
         }
 
         [HttpPost]
-        public ActionResult Editar(FormCollection form, int? pagePos)
+        public ActionResult Editar(FormCollection form)
         {
-            int pageNumber = (pagePos ?? 1);
             int envioInvitacion = ps.ObtenerEnviarInvitacion(form);
             
             //Pedido pedidoEditado = ps.ObtenerPedidoDesdeFormCollection(form);
@@ -138,8 +137,8 @@ namespace TrabajoPracticoPw3.Controllers
             ps.ActualizarValoresDeUnPedidoDesdeFormCollection(form);
             usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
             ViewBag.Usuario = usuarioLoguedado;
-            List<Pedido> listaPedidos = ps.ListarPedidosByUsuario(usuarioLoguedado);
-            return View("Lista", listaPedidos.ToPagedList(pageNumber, 5));
+            //return View("Lista", listaPedidos.ToPagedList(pageNumber, 5));
+            return RedirectToAction("Lista");
         }
 
         public ActionResult Eliminar(int id)

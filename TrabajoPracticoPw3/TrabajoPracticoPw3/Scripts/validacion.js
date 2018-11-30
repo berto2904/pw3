@@ -20,7 +20,8 @@ return true;
 function validacionLogin() {
     email = document.getElementById("email").value;
     pw = document.getElementById("password").value;
-    if (email == null || email.length == 0 || /^\s+$/.test(email) || !(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(email))) {
+    if (email == null || email.length == 0 || /^\s+$/.test(email) || !(/\w+([-+.']\w+)*@\w+([-.]\w+)*\./.test(email))) {
+    //if (email == null || email.length == 0 || /^\s+$/.test(email) || !(/\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)/.test(email))) {
         alert('[ERROR] El campo email es obligatorio');
         return false;
     }

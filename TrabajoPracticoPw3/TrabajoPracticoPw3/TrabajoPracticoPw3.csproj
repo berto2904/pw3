@@ -301,9 +301,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\Controller\PedidoController.cs" />
+    <Compile Include="Api\Controller\PedidoInfoController.cs" />
     <Compile Include="Api\Model\GustoEmpanadaJson.cs" />
     <Compile Include="Api\Model\InvitacionGustoJson.cs" />
     <Compile Include="Api\Model\MensajeJson.cs" />
+    <Compile Include="Api\Model\PedidoInfoJson.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />

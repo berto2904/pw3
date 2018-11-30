@@ -15,38 +15,16 @@ namespace TrabajoPracticoPw3.Api
     //[EnableCors(origins: "*", headers: "*", methods: "*")]
     public class PedidoController : ApiController
     {
-        //public class PedidoJson {
-
-        //    public int IdPedido { get; set; }
-        //    public string Descripcion { get; set; }
-        //}
-
         TPEntities ctx = new TPEntities();
         PedidoService ps = new PedidoService();
 
         //GET api/values
         //public string Get()
         //{
-        //    foreach (var pedido in ctx.Pedido.ToList())
-        //    {
-        //        var pJson = new PedidoJson();
-
-        //    }
-
-
-        //    var pedidoJson = new
-        //    {
-
-        //        IdPedido = 1,
-        //        Descripcion = "pedido ssssss",
-        //    };
-
-        //    string json = JsonConvert.SerializeObject(listaPedidos);
-        //    return json;
-
         //}
 
-        //[Route("api/Pedido/ConfirmarGustos")]
+
+        // POST api/values
         [ActionName("ConfirmarGustos")]
         [HttpPost]
         public string ConfirmarGustos([FromBody] InvitacionGustoJson model)
@@ -58,13 +36,10 @@ namespace TrabajoPracticoPw3.Api
         // GET api/values/5
         public string Get(int id)
         {
-            return "value";
+            PedidoInfoJson pedidoJson = ps.ObtenerPedidoByJson(id);
+            return  JsonConvert.SerializeObject(pedidoJson);
         }
 
-        // POST api/values
-        //public void Post([FromBody]string value)
-        //{
-        //}
 
         // PUT api/values/5
         public void Put(int id, [FromBody]string value)

@@ -85,6 +85,17 @@ namespace TrabajoPracticoPw3.Services
             return nuevoPedido.IdPedido;
         }
 
+        public PedidoInfoJson ObtenerPedidoByJson(int id)
+        {
+            Pedido pedido = ObtenerPedidoById(id);
+            PedidoInfoJson pedidoJson = new PedidoInfoJson
+            {
+                NombreNegocio = pedido.NombreNegocio,
+                CantidadInvitados = pedido.InvitacionPedido.Where(i => i.Completado == true).Count()
+            };
+
+            return pedidoJson;
+        }
 
         public int EliminarService(int id)
         {
