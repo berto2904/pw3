@@ -159,7 +159,7 @@ namespace TrabajoPracticoPw3.Controllers
             {
                 return RedirectToAction("Login", "Home", new {redirigir = "/Pedidos/Elegir/"+id});
             }
-
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
             if (!ps.InvitacionPedidoUsuarioIsTrue(id, usuarioLoguedado))
             {
                 TempData["mensaje"] = "Acceso invalido";
