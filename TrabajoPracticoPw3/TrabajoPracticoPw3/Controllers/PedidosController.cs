@@ -36,6 +36,19 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult IniciarDesde(int id)
+        {
+            //ValidarUsuarioSesion();
+
+            Pedido PedidoBase = ps.ObtenerPedidoPorId(id);
+
+            ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
+
+            return View(PedidoBase);
+        }
+
         [HttpPost]
         public ActionResult Iniciar(FormCollection form)
         {
@@ -182,11 +195,6 @@ namespace TrabajoPracticoPw3.Controllers
             return RedirectToAction("Lista", new { id = idPedido });
         }
 
-        public ActionResult Detalle()
-        {
-            return View();
-        }
-
         public ActionResult ValidarUsuarioSesion()
         {
             if (Session["usuario"] == null)
@@ -196,7 +204,6 @@ namespace TrabajoPracticoPw3.Controllers
             return null;
         }
 
-        //[HttpPost]
         public ActionResult Finalizar(int id)
         {
             ps.FinalizarPedidoPorId(id);
@@ -204,5 +211,14 @@ namespace TrabajoPracticoPw3.Controllers
             return RedirectToAction("Lista");
         }
 
+        public ActionResult Detalle(int id)
+        {
+            Pedido pedido = ps.ObtenerPedidoById(id);
+
+            ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
+
+            return View(pedido);
+        }
     }
 }

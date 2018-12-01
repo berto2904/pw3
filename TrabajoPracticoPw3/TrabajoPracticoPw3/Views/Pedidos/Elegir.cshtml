@@ -8,8 +8,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="well well-sm">
-                @*@using (Html.BeginForm())
-                    {*@
                 <form action="/Pedidos/elegir" method="post">
                     <fieldset>
                         <legend class="header">Elige Gustos</legend>
@@ -18,7 +16,6 @@
                                 <div class="form-group">
                                     <label class="lead"> Nombre de Negocio</label>
                                     <p class="form-control-lg">@Model.NombreNegocio</p>
-
                                     <label class="lead"> Descripcion</label>
                                     <p class="form-control-lg">@Model.Descripcion</p>
                                     <label class="lead"> Precio por Unidad</label>
@@ -34,7 +31,6 @@
                                     <input type="hidden" id="Token" name="token" value="@ViewBag.TokenInvitacion" />
                                     <input type="hidden" id="IdUsuario" name="IdUsuario" value="@ViewBag.IdUsuario" />
                                     <label for="NombreNegocio" class="lead">Gusto de empanadas</label>
-
 
                                     @foreach (var gusto in Model.GustoEmpanada)
                                     {
@@ -59,7 +55,6 @@
 
                     </fieldset>
                 </form>
-                @*}*@
             </div>
         </div>
     </div>
@@ -77,7 +72,7 @@
                 <p id="mensajeGustos"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">Gracias</button>
+                <a href="/Pedidos/Lista" class="btn btn-info">Gracias</a>
             </div>
         </div>
 
