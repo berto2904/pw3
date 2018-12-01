@@ -147,6 +147,25 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+        public void EnviarInvitacionesDesdeUnaListaDeUsuarios(List<Usuario> usuariosAEnviarInvitacion, Pedido pedido)
+        {
+            foreach (Usuario invitado in usuariosAEnviarInvitacion)
+            {
+                Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == invitado.IdUsuario);
+                Pedido pedidoEncontrado = ctx.Pedido.SingleOrDefault(p => p.IdPedido == pedido.IdPedido);
+                InvitacionPedido invitacionPedido = new InvitacionPedido
+                {
+                    Pedido = pedidoEncontrado,
+                    Usuario = usuarioEncontrado,
+                    Token = new Guid(new Md5Hash().GetMD5((usuarioEncontrado.Email + pedidoEncontrado.FechaCreacion))),
+                    Completado = false,
+                };
+                ctx.InvitacionPedido.Add(invitacionPedido);
+                ctx.SaveChanges();
+                es.EnviarEmailInvitados(invitacionPedido);
+            }
+        }
+
         public int ElegirService(FormCollection form, Usuario usuarioLoguedado)
         {
             Pedido pedido = ObtenerPedidoById(int.Parse(form["idPedido"]));
@@ -204,7 +223,7 @@ namespace TrabajoPracticoPw3.Services
             MensajeJson msjJson = new MensajeJson();
             try
             {
-            Pedido pedido = ObtenerPedidoById(ctx.InvitacionPedido.Where(t => t.Token == invitacionJson.Token && t.IdUsuario == invitacionJson.IdUsuario).FirstOrDefault().IdPedido);
+                Pedido pedido = ObtenerPedidoById(ctx.InvitacionPedido.Where(t => t.Token == invitacionJson.Token && t.IdUsuario == invitacionJson.IdUsuario).FirstOrDefault().IdPedido);
 
                 foreach (var gustoSolicitados in invitacionJson.GustosEmpanadasCantidad)
                 {
@@ -281,7 +300,7 @@ namespace TrabajoPracticoPw3.Services
                 return msjJson;
 
             }
-            
+
         }
         //------------------------------Queries------------------------------
 
@@ -393,27 +412,27 @@ namespace TrabajoPracticoPw3.Services
         {
             List<Usuario> usuariosAInvitar = new List<Usuario>();
 
+            List<Usuario> usuariosListados = new List<Usuario>();
+
             Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["IdPedido"]));
 
-            foreach (Usuario usuario in form)
+            int[] invitados = Array.ConvertAll(form.GetValues("invitados"), int.Parse);
+
+            foreach (var usuario in invitados)
             {
-                if (pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                Usuario usuarioBuscado = BuscarUsuarioById(usuario);
+                usuariosListados.Add(usuarioBuscado);
+            }
+
+            foreach (Usuario usuario in usuariosListados)
+            {
+                if (usuario.InvitacionPedido.Where(u => u.IdPedido == pedidoAEditar.IdPedido).Select(i => i.Completado).FirstOrDefault() == true)
                 {
-                    usuariosAInvitar.Add(usuario);
+
                 }
                 else
                 {
-                    foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario)
-                    {
-                        if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            usuariosAInvitar.Add(usuario);
-                        }
-                    }
+                    usuariosAInvitar.Add(usuario);
                 }
             }
 
@@ -430,9 +449,6 @@ namespace TrabajoPracticoPw3.Services
                 PrecioUnidad = int.Parse(form["precioUnidad"]),
                 PrecioDocena = int.Parse(form["precioDocena"]),
                 FechaCreacion = DateTime.Now,
-                //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
-                //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
-                //EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
             };
             return pedidoEditado;
         }
@@ -489,7 +505,6 @@ namespace TrabajoPracticoPw3.Services
                 foreach (InvitacionPedido invitacionPedido in invitaciones)
                 {
                     if (usuario.IdUsuario == invitacionPedido.IdUsuario)
-                    ///if (usuario.InvitacionPedido.Contains(invitacionPedido))
                     {
                         break;
                     }
@@ -613,7 +628,7 @@ namespace TrabajoPracticoPw3.Services
         {
             var precioUnidad = pedido.PrecioUnidad;
             var precioDocena = pedido.PrecioDocena;
-            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c=>c.Cantidad).Sum();
+            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c => c.Cantidad).Sum();
 
             int cantDocenas = cantEmpanadas / 12;
             int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
@@ -629,7 +644,7 @@ namespace TrabajoPracticoPw3.Services
 
             foreach (var invitacion in pedido.InvitacionPedido)
             {
-                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.IdUsuario == invitacion.IdUsuario).Select(i => i.Cantidad).Sum();
                 var precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
 
 
