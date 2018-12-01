@@ -618,19 +618,19 @@ namespace TrabajoPracticoPw3.Services
             int cantDocenas = cantEmpanadas / 12;
             int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
 
-            var precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
-            var precioTotalDocena = cantDocenas * precioDocena;
+            float precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
+            float precioTotalDocena = cantDocenas * precioDocena;
 
-            var precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
-            var precioPorEmpanada = precioTotal / cantEmpanadas;
+            float precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
+            float precioPorEmpanada = precioTotal / cantEmpanadas;
 
             List<InfoInvitadoEmail> listaInvitados = new List<InfoInvitadoEmail>();
             List<InfoGustosEmail> listaGustos = new List<InfoGustosEmail>();
 
             foreach (var invitacion in pedido.InvitacionPedido)
             {
-                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
-                var precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
+                float cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                float precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
 
 
                 InfoInvitadoEmail infoEmailResponsable = new InfoInvitadoEmail
