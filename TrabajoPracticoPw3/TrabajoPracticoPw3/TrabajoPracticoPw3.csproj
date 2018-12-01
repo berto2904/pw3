@@ -382,6 +382,7 @@
     <Content Include="Views\Pedidos\Eliminar.cshtml" />
     <Content Include="Views\Pedidos\Editar.cshtml" />
     <Content Include="Views\Pedidos\Detalle.cshtml" />
+    <Content Include="Views\Pedidos\IniciarDesde.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

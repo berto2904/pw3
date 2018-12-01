@@ -36,6 +36,19 @@ namespace TrabajoPracticoPw3.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult IniciarDesde(int id)
+        {
+            //ValidarUsuarioSesion();
+
+            Pedido PedidoBase = ps.ObtenerPedidoPorId(id);
+
+            ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
+
+            return View(PedidoBase);
+        }
+
         [HttpPost]
         public ActionResult Iniciar(FormCollection form)
         {
