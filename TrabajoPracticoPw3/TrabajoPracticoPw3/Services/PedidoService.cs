@@ -8,6 +8,8 @@ using System.Web.Mvc;
 using TrabajoPracticoPw3.Api.Model;
 using TrabajoPracticoPw3.Helper;
 using TrabajoPracticoPw3.Models;
+using TrabajoPracticoPw3.Models.Email;
+
 namespace TrabajoPracticoPw3.Services
 {
     public class PedidoService
@@ -594,10 +596,52 @@ namespace TrabajoPracticoPw3.Services
         public void FinalizarPedidoPorId(int id)
         {
             Pedido pedidoAFinalizar = ObtenerPedidoById(id);
-
+            CalcularPedidoResponsable(pedidoAFinalizar);
             pedidoAFinalizar.EstadoPedido = ctx.EstadoPedido.Where(e => e.IdEstadoPedido == 2).FirstOrDefault();
 
             ctx.SaveChanges();
+        }
+
+        public void CalcularPedidoResponsable(Pedido pedido)
+        {
+            var precioUnidad = pedido.PrecioUnidad;
+            var precioDocena = pedido.PrecioDocena;
+            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c=>c.Cantidad).Sum();
+
+            int cantDocenas = cantEmpanadas / 12;
+            int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
+
+            var precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
+            var precioTotalDocena = cantDocenas * precioDocena;
+
+            var precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
+            var precioPorEmpanada = precioTotal / cantEmpanadas;
+
+            List<InfoInvitadoEmail> listaInvitados = new List<InfoInvitadoEmail>();
+
+            foreach (var invitacion in pedido.InvitacionPedido)
+            {
+                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                var precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
+
+                InfoInvitadoEmail infoEmailResponsable = new InfoInvitadoEmail
+                {
+                    Email = invitacion.Usuario.Email,
+                    Precio = precioPerCapita
+                };
+
+                listaInvitados.Add(infoEmailResponsable);
+            }
+
+            InfoEmailResponsable infoResponsable = new InfoEmailResponsable
+            {
+                PrecioTotal = precioTotal,
+                invitados = listaInvitados
+            };
+
+            //TODO: EnviarEmail Responsable
+            //TODO: EnviarEmail Invitados
+            
         }
     }
 }
