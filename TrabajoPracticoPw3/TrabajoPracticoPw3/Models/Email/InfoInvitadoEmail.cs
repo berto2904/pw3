@@ -9,5 +9,7 @@ namespace TrabajoPracticoPw3.Models.Email
     {
         public string Email { get; set; }
         public float Precio { get; set; }
+        public List<InfoGustosEmail> Empanadas { get; set; }
+        public int CantidadTotal { get; set; }
     }
 }

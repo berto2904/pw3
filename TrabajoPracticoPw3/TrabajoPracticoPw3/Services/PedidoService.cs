@@ -607,6 +607,7 @@ namespace TrabajoPracticoPw3.Services
         {
             InfoEmailResponsable infoResponsable = CalcularPedidoResponsable(pedidoAFinalizar);
             es.EnviarEmailResponsable(pedidoAFinalizar, infoResponsable);
+            es.EnviarEmailInvitados(pedidoAFinalizar, infoResponsable);
         }
 
         public InfoEmailResponsable CalcularPedidoResponsable(Pedido pedido)
@@ -629,14 +630,29 @@ namespace TrabajoPracticoPw3.Services
 
             foreach (var invitacion in pedido.InvitacionPedido)
             {
-                float cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                int cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
                 float precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
 
+                List<InfoGustosEmail> listaEmpanadas = new List<InfoGustosEmail>();
+
+                foreach (var gusto in pedido.GustoEmpanada)
+                {
+                    var cantidadEmpanadaPorGusto = pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == invitacion.IdUsuario).Select(i => i.Cantidad).FirstOrDefault();
+                    InfoGustosEmail empanada = new InfoGustosEmail
+                    {
+                        Gusto = gusto.Nombre,
+                        Cantidad = cantidadEmpanadaPorGusto
+                    };
+                    listaEmpanadas.Add(empanada);
+                }
 
                 InfoInvitadoEmail infoEmailResponsable = new InfoInvitadoEmail
                 {
                     Email = invitacion.Usuario.Email,
-                    Precio = precioPerCapita
+                    Precio = precioPerCapita,
+                    CantidadTotal= cantidadEmpanadaPerCapita,
+                    Empanadas = listaEmpanadas
+                    
                 };
 
 
