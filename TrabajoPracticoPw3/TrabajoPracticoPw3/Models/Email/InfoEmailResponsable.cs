@@ -9,6 +9,7 @@ namespace TrabajoPracticoPw3.Models
     public class InfoEmailResponsable
     {
         public int PrecioTotal { get; set; }
-        public List<InfoInvitadoEmail> invitados { get; set; }
+        public List<InfoInvitadoEmail> Invitados { get; set; }
+        public List<InfoGustosEmail> Gustos { get; set; }
     }
 }
