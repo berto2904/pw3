@@ -8,11 +8,15 @@ using System.Web.Mvc;
 using TrabajoPracticoPw3.Api.Model;
 using TrabajoPracticoPw3.Helper;
 using TrabajoPracticoPw3.Models;
+using TrabajoPracticoPw3.Models.Email;
+
 namespace TrabajoPracticoPw3.Services
 {
     public class PedidoService
     {
         TPEntities ctx = new TPEntities();
+        EmailService es = new EmailService();
+
         public Usuario BuscarUsuarioById(int idUsuario)
         {
             Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == idUsuario);
@@ -23,7 +27,6 @@ namespace TrabajoPracticoPw3.Services
 
         public int IniciarService(FormCollection form, Usuario usuarioLogueado)
         {
-            EmailService es = new EmailService();
             Usuario uLogueado = ctx.Usuario.Find(usuarioLogueado.IdUsuario);
             Pedido nuevoPedido = new Pedido
             {
@@ -594,10 +597,70 @@ namespace TrabajoPracticoPw3.Services
         public void FinalizarPedidoPorId(int id)
         {
             Pedido pedidoAFinalizar = ObtenerPedidoById(id);
-
+            AvisarUsuarioResponsable(pedidoAFinalizar);
             pedidoAFinalizar.EstadoPedido = ctx.EstadoPedido.Where(e => e.IdEstadoPedido == 2).FirstOrDefault();
 
             ctx.SaveChanges();
+        }
+
+        public void AvisarUsuarioResponsable(Pedido pedidoAFinalizar)
+        {
+            InfoEmailResponsable infoResponsable = CalcularPedidoResponsable(pedidoAFinalizar);
+            es.EnviarEmailResponsable(pedidoAFinalizar, infoResponsable);
+        }
+
+        public InfoEmailResponsable CalcularPedidoResponsable(Pedido pedido)
+        {
+            var precioUnidad = pedido.PrecioUnidad;
+            var precioDocena = pedido.PrecioDocena;
+            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c=>c.Cantidad).Sum();
+
+            int cantDocenas = cantEmpanadas / 12;
+            int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
+
+            var precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
+            var precioTotalDocena = cantDocenas * precioDocena;
+
+            var precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
+            var precioPorEmpanada = precioTotal / cantEmpanadas;
+
+            List<InfoInvitadoEmail> listaInvitados = new List<InfoInvitadoEmail>();
+            List<InfoGustosEmail> listaGustos = new List<InfoGustosEmail>();
+
+            foreach (var invitacion in pedido.InvitacionPedido)
+            {
+                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                var precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
+
+
+                InfoInvitadoEmail infoEmailResponsable = new InfoInvitadoEmail
+                {
+                    Email = invitacion.Usuario.Email,
+                    Precio = precioPerCapita
+                };
+
+
+                listaInvitados.Add(infoEmailResponsable);
+            }
+
+            foreach (var gusto in pedido.GustoEmpanada)
+            {
+                var cantidadEmpanadaPorGusto = pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada).Select(i => i.Cantidad).Sum();
+                InfoGustosEmail infoGustosResponsable = new InfoGustosEmail
+                {
+                    Gusto = gusto.Nombre,
+                    Cantidad = cantidadEmpanadaPorGusto
+                };
+                listaGustos.Add(infoGustosResponsable);
+            }
+
+            InfoEmailResponsable infoResponsable = new InfoEmailResponsable
+            {
+                PrecioTotal = precioTotal,
+                Invitados = listaInvitados,
+                Gustos = listaGustos
+            };
+            return infoResponsable;
         }
     }
 }
