@@ -11,8 +11,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="well well-sm">
-                @*@using (Html.BeginForm())
-                    {*@
                 <fieldset>
                     <legend class="header">Tu pedido</legend>
                     <hr />
@@ -65,25 +63,13 @@
                                             <tr>
                                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                                 <td>@usuario.Email&nbsp;&nbsp;</td>
-                                                @if (Model.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                                                @if (usuario.InvitacionPedido.Where(u => u.IdPedido == Model.IdPedido).Select(i => i.Completado).FirstOrDefault() == true)
                                                 {
-                                                    <td> (NO) </td>
+                                                    <td> (SI) </td>
                                                 }
                                                 else
                                                 {
-                                                    foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in Model.InvitacionPedidoGustoEmpanadaUsuario)
-                                                    {
-                                                        if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
-                                                        {
-                                                            <td> (SI) </td>
-                                                            break;
-                                                        }
-                                                        else
-                                                        {
-                                                            <td> (NO) </td>
-                                                            break;
-                                                        }
-                                                    }
+                                                    <td> (NO) </td>
                                                 }
                                             </tr>
                                         }
@@ -97,7 +83,6 @@
                         <a href="/Pedidos/Lista" class="btn btn-Info btn-lg">Volver</a>
                     </div>
                 </fieldset>
-                @*}*@
             </div>
         </div>
     </div>

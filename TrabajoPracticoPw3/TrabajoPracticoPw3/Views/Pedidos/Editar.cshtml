@@ -11,8 +11,6 @@
     <div class="row">
         <div class="col-md-12">
             <div class="well well-sm">
-                @*@using (Html.BeginForm())
-                    {*@
                 <form action="/Pedidos/Editar" method="post">
                     <fieldset>
                         <legend class="header">Tu pedido</legend>
@@ -22,28 +20,23 @@
                                 <div class="form-group">
                                     <label for="NombreNegocio">Nombre de Negocio</label>
                                     <input type="text" class="form-control" name="nombre" value="@Model.NombreNegocio" id="nombre" required />
-                                    @*@Html.TextBoxFor(p => p.NombreNegocio, new { @class = "form-control", @id = "nombre" })*@
                                 </div>
 
                                 <div class="form-group">
                                     <label for="Descripcion">Descripcion</label>
                                     <input type="text" name="descripcion" class="form-control" value="@Model.Descripcion" id="descripcion" />
-                                    @*@Html.TextAreaFor(p => p.Descripcion, new { @class = "form-control", @id = "descripcion" })*@
                                 </div>
 
                                 <div class="form-group">
                                     <label for="precioUnidad">Precio Unidad</label>
                                     <input type="text" name="precioUnidad" class="form-control" value="@Model.PrecioUnidad" id="precioUnidad" required />
-                                    @*@Html.TextBoxFor(m => m.PrecioUnidad, new { @class = "form-control", @id = "precioUnidad", type = "number", min = "0" })*@
                                 </div>
 
                                 <div class="form-group">
                                     <label for="precioDocena">Precio Docena</label>
                                     <input type="text" name="precioDocena" class="form-control" value="@Model.PrecioDocena" id="precioDocena" required />
-                                    @*@Html.TextBoxFor(m => m.PrecioDocena, new { @class = "form-control", @id = "precioDocena", type = "number", min = "0" })*@
                                 </div>
                             </div>
-
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="NombreNegocio">Gusto de empanadas</label>
@@ -60,44 +53,28 @@
                                             }
                                         }
                                     </select>
-
-                                    @*if (currentStatus=="Completed"){
-                                        selStatus.options[1].selected=true;
-                                        }*@
-
-                                    @*@Html.DropDownListFor(p => p.GustoEmpanada, ViewBag.ListaDeGustos as MultiSelectList, new { @id = "gustosDisponibles", @class = "form-control multipleSelect", multiple = "multiple" })*@
                                 </div>
                                 <div class="form-group">
                                     <label for="NombreNegocio">Invitados</label>
                                     <div class="form-group">
                                         <table class="table-borderless tab-pane">
                                             <tr>
+                                                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                                 <th>Usuario</th>
                                                 <th>Eligio gustos?</th>
                                             </tr>
                                             @foreach (Usuario usuario in ViewBag.ListaDeUsuarios)
                                             {
                                                 <tr>
-                                                    <td>@usuario.Email</td>
-                                                    @if (Model.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                                                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                    <td>@usuario.Email&nbsp;&nbsp;</td>
+                                                    @if (usuario.InvitacionPedido.Where(u => u.IdPedido == Model.IdPedido).Select(i => i.Completado).FirstOrDefault() == true)
                                                     {
-                                                        <td> (NO) </td>
+                                                        <td> (SI) </td>
                                                     }
                                                     else
                                                     {
-                                                        foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in Model.InvitacionPedidoGustoEmpanadaUsuario)
-                                                        {
-                                                            if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
-                                                            {
-                                                                <td> (SI) </td>
-                                                                break;
-                                                            }
-                                                            else
-                                                            {
-                                                                <td> (NO) </td>
-                                                                break;
-                                                            }
-                                                        }
+                                                        <td> (NO) </td>
                                                     }
                                                 </tr>
                                             }
@@ -130,8 +107,6 @@
                                             }
                                         </select>
                                     </div>
-
-                                    @*@Html.DropDownListFor(p => p., ViewBag.ListaDeUsuarios as MultiSelectList, new { @id = "invitados", @class = "form-control multipleSelect", multiple = "multiple" })*@
                                 </div>
                             </div>
                         </div>
@@ -149,17 +124,15 @@
                         </div>
                         <hr />
                         <div class="btn-toolbar d-flex justify-content-around">
-                            @*<a href="/Pedidos/Finalizar/@Model.IdPedido" class="btn btn-warning">Finalizar</a>*@
                             <a id=@Model.IdPedido data-toggle="modal" data-target="#FinalizarModal" data-id="@Model.IdPedido" class="btn btn-lg btn-danger">Finalizar</a>
                             <button type="submit" class="btn btn-Info btn-lg">Guardar</button>
                         </div>
-                        <!-- TODO: Agregar boton "Finalizar Pedido"-->
                     </fieldset>
                 </form>
-                @*}*@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 
