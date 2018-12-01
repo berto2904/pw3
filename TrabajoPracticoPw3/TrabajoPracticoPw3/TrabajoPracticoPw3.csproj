@@ -314,12 +314,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Email\InfoInvitadoEmail.cs" />
     <Compile Include="Models\EstadoPedido.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\GustoEmpanada.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Email\InfoEmailResponsable.cs" />
     <Compile Include="Models\InvitacionPedido.cs">
       <DependentUpon>TPModel.tt</DependentUpon>
     </Compile>
