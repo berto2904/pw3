@@ -18,6 +18,7 @@
             <th scope="col">Editar</th>
             <th scope="col">Elegir Gustos</th>
             <th scope="col">Eliminar</th>
+            <th scope="col">Usar como Base</th>
 
         </tr>
     </thead>
@@ -64,6 +65,7 @@
                     <td></td>
                 }
             }
+                    <td><a href="/Pedidos/IniciarDesde/@pedido.IdPedido" class="btn btn-primary">Este Pedido</a></td>
             <td></td>
             <td></td>
             <td></td>
@@ -72,11 +74,11 @@
         }
     </tbody>
 </table>
-
-<div class="pageCount">
-    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount
+<hr />
+<div class="pageCount d-flex align-items-center flex-column justify-content-around">
+    <b>Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount</b>
+    <p>@Html.PagedListPager(Model, pagePos => Url.Action("Lista", new { pagePos }))</p>
 </div>
-@Html.PagedListPager(Model, pagePos => Url.Action("Lista", new { pagePos }))
 
 <div class="btn-group" role="group" aria-label="Basic example">
     <a href="/Pedidos/Iniciar" class="btn btn-success">Iniciar Pedido</a>
