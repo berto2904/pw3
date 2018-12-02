@@ -217,6 +217,12 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+        public Pedido ObtenerPedidoByToken(Guid token)
+        {
+            Pedido pedido = ctx.InvitacionPedido.Where(i => i.Token == token).Select(p => p.Pedido).FirstOrDefault();
+            return pedido;
+        }
+
         //TODO: Elegir service por json
         public MensajeJson ElegirServiceByJson(InvitacionGustoJson invitacionJson)
         {
@@ -622,36 +628,52 @@ namespace TrabajoPracticoPw3.Services
         {
             InfoEmailResponsable infoResponsable = CalcularPedidoResponsable(pedidoAFinalizar);
             es.EnviarEmailResponsable(pedidoAFinalizar, infoResponsable);
+            es.EnviarEmailInvitados(pedidoAFinalizar, infoResponsable);
         }
 
         public InfoEmailResponsable CalcularPedidoResponsable(Pedido pedido)
         {
             var precioUnidad = pedido.PrecioUnidad;
             var precioDocena = pedido.PrecioDocena;
-            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c => c.Cantidad).Sum();
+            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c=>c.Cantidad).Sum();
 
             int cantDocenas = cantEmpanadas / 12;
             int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
 
-            var precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
-            var precioTotalDocena = cantDocenas * precioDocena;
+            float precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
+            float precioTotalDocena = cantDocenas * precioDocena;
 
-            var precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
-            var precioPorEmpanada = precioTotal / cantEmpanadas;
+            float precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
+            float precioPorEmpanada = precioTotal / cantEmpanadas;
 
             List<InfoInvitadoEmail> listaInvitados = new List<InfoInvitadoEmail>();
             List<InfoGustosEmail> listaGustos = new List<InfoGustosEmail>();
 
             foreach (var invitacion in pedido.InvitacionPedido)
             {
-                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.IdUsuario == invitacion.IdUsuario).Select(i => i.Cantidad).Sum();
-                var precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
+                int cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                float precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
 
+                List<InfoGustosEmail> listaEmpanadas = new List<InfoGustosEmail>();
+
+                foreach (var gusto in pedido.GustoEmpanada)
+                {
+                    var cantidadEmpanadaPorGusto = pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == invitacion.IdUsuario).Select(i => i.Cantidad).FirstOrDefault();
+                    InfoGustosEmail empanada = new InfoGustosEmail
+                    {
+                        Gusto = gusto.Nombre,
+                        Cantidad = cantidadEmpanadaPorGusto
+                    };
+                    listaEmpanadas.Add(empanada);
+                }
 
                 InfoInvitadoEmail infoEmailResponsable = new InfoInvitadoEmail
                 {
                     Email = invitacion.Usuario.Email,
-                    Precio = precioPerCapita
+                    Precio = precioPerCapita,
+                    CantidadTotal= cantidadEmpanadaPerCapita,
+                    Empanadas = listaEmpanadas
+                    
                 };
 
 

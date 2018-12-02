@@ -183,6 +183,30 @@ namespace TrabajoPracticoPw3.Controllers
             return View(pedido);
         }
 
+        public ActionResult ElegirToken(System.Guid id)
+        {
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/ElegirToken/" + id });
+            }
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+            //Guid token = Guid.Parse(tokn);
+            Pedido pedido = ps.ObtenerPedidoByToken(id);
+            if (!(usuarioLoguedado.IdUsuario == pedido.InvitacionPedido.Where(i=>i.Token == id).Select(u=>u.IdUsuario).FirstOrDefault()))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
+            if (!ps.InvitacionPedidoUsuarioIsTrue(pedido.IdPedido, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
+            ViewBag.IdUsuario = usuarioLoguedado.IdUsuario;
+            ViewBag.TokenInvitacion = pedido.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault().Token.ToString();
+            return View("Elegir", pedido);
+        }
+
         [HttpPost]
         public ActionResult Elegir(FormCollection form)
         {
