@@ -87,7 +87,7 @@ namespace TrabajoPracticoPw3.Services
                                 "  <h3>Cantidad de Empanadas: "+ invitado.CantidadTotal + " </h3>" +
                                 "</div>"+
                                 "<div >" +
-                                "  <h3>Precio a abonar: $"+invitado.Precio+"$</h3>" +
+                                "  <h3>Precio a abonar: $"+invitado.Precio+"</h3>" +
                                 "</div>";
 
                 email.IsBodyHtml = true;
