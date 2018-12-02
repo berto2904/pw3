@@ -425,10 +425,10 @@ namespace TrabajoPracticoPw3.Services
             Pedido pedidoEditado = new Pedido
             {
                 IdPedido = int.Parse(form["IdPedido"]),
-                NombreNegocio = form["nombre"],
-                Descripcion = form["descripcion"],
-                PrecioUnidad = int.Parse(form["precioUnidad"]),
-                PrecioDocena = int.Parse(form["precioDocena"]),
+                NombreNegocio = form["NombreNegocio"],
+                Descripcion = form["Descripcion"],
+                PrecioUnidad = int.Parse(form["PrecioUnidad"]),
+                PrecioDocena = int.Parse(form["PrecioDocena"]),
                 FechaCreacion = DateTime.Now,
                 //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
                 //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
@@ -510,16 +510,13 @@ namespace TrabajoPracticoPw3.Services
                     }
                 }
             }
-
-
-            pedidoAEditar.Descripcion = pedidoEditado.Descripcion;
             //pedidoAEditar.GustoEmpanada = pedidoEditado.GustoEmpanada;
             //pedidoAEditar.InvitacionPedido = pedidoEditado.InvitacionPedido;
             //pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario = pedidoEditado.InvitacionPedidoGustoEmpanadaUsuario;
             pedidoAEditar.NombreNegocio = pedidoEditado.NombreNegocio;
+            pedidoAEditar.Descripcion = pedidoEditado.Descripcion;
             pedidoAEditar.PrecioDocena = pedidoEditado.PrecioDocena;
             pedidoAEditar.PrecioUnidad = pedidoEditado.PrecioUnidad;
-
             ctx.SaveChanges();
         }
 

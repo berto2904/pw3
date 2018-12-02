@@ -12,6 +12,7 @@
         <div class="col-md-12">
             <div class="well well-sm">
                 <form action="/Pedidos/Editar" method="post">
+                      @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <fieldset>
                         <legend class="header">Tu pedido</legend>
                         <input type="hidden" name="IdPedido" value="@Model.IdPedido" />
@@ -19,22 +20,26 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="NombreNegocio">Nombre de Negocio</label>
-                                    <input type="text" class="form-control" name="nombre" value="@Model.NombreNegocio" id="nombre" required />
+                                    @Html.EditorFor(model => model.NombreNegocio, new { htmlAttributes = new { @class = "form-control", placeholder = "Nombre del Negocio", autocomplete = "off", required = "true" } })
+                                    @Html.ValidationMessageFor(model => model.NombreNegocio, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group">
                                     <label for="Descripcion">Descripcion</label>
-                                    <input type="text" name="descripcion" class="form-control" value="@Model.Descripcion" id="descripcion" />
+                                    @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control", placeholder = "Descripción", autocomplete = "off" } })
+                                    @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group">
                                     <label for="precioUnidad">Precio Unidad</label>
-                                    <input type="text" name="precioUnidad" class="form-control" value="@Model.PrecioUnidad" id="precioUnidad" required />
+                                    @Html.EditorFor(model => model.PrecioUnidad, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio Unidad ($)", autocomplete = "off", required = "true" } })
+                                    @Html.ValidationMessageFor(model => model.PrecioUnidad, "", new { @class = "text-danger" })
                                 </div>
 
                                 <div class="form-group">
                                     <label for="precioDocena">Precio Docena</label>
-                                    <input type="text" name="precioDocena" class="form-control" value="@Model.PrecioDocena" id="precioDocena" required />
+                                    @Html.EditorFor(model => model.PrecioDocena, new { htmlAttributes = new { @class = "form-control", placeholder = "Precio Docena ($)", autocomplete = "off", required = "true" } })
+                                    @Html.ValidationMessageFor(model => model.PrecioDocena, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -132,7 +137,6 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 
 
