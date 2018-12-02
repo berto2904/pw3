@@ -198,6 +198,12 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+        public Pedido ObtenerPedidoByToken(Guid token)
+        {
+            Pedido pedido = ctx.InvitacionPedido.Where(i => i.Token == token).Select(p => p.Pedido).FirstOrDefault();
+            return pedido;
+        }
+
         //TODO: Elegir service por json
         public MensajeJson ElegirServiceByJson(InvitacionGustoJson invitacionJson)
         {
