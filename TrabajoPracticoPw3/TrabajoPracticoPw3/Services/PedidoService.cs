@@ -217,6 +217,8 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+
+
         public Pedido ObtenerPedidoByToken(Guid token)
         {
             Pedido pedido = ctx.InvitacionPedido.Where(i => i.Token == token).Select(p => p.Pedido).FirstOrDefault();
@@ -365,6 +367,49 @@ namespace TrabajoPracticoPw3.Services
             return usuariosAInvitar;
         }
 
+        public List<Usuario> ObtenerTodosLosUsuariosInvitadosDesdeUnPedido(Pedido pedido)
+        {
+            var query =
+                (from ip in ctx.InvitacionPedido
+                 join p in ctx.Pedido on ip.IdPedido equals p.IdPedido
+                 join u in ctx.Usuario on ip.IdUsuario equals u.IdUsuario
+                 where ip.IdPedido == pedido.IdPedido
+                 select
+                    u).Distinct().ToList();
+            return query;
+        }
+
+        public List<Usuario> QuitarUserActivoDeUnaListaDeUsuarios(List<Usuario> usuarios, Usuario usuarioLogueado)
+        {
+            List<Usuario> listaFiltrada = new List<Usuario>();
+
+            foreach (Usuario usuario in usuarios)
+            {
+                if (usuario.IdUsuario == usuarioLogueado.IdUsuario)
+                {
+                    
+                }
+                else
+                {
+                    listaFiltrada.Add(usuario);
+                }
+            }
+
+            return listaFiltrada;
+        }
+
+        internal dynamic ObtenerTodosLosUsuariosInvitadosDesdeUnPedidoSinUserResponsable(Pedido pedidoAEditar, Usuario usuarioLoguedado)
+        {
+            var query =
+                (from ip in ctx.InvitacionPedido
+                 join p in ctx.Pedido on ip.IdPedido equals p.IdPedido
+                 join u in ctx.Usuario on ip.IdUsuario equals u.IdUsuario
+                 where ip.IdPedido == p.IdPedido 
+                 where u.IdUsuario != usuarioLoguedado.IdUsuario
+                 select
+                    u).Distinct().ToList();
+            return query;
+        }
 
         public List<Usuario> ObtenerTodosLosUsuariosInvitados(FormCollection form)
         {
@@ -632,7 +677,7 @@ namespace TrabajoPracticoPw3.Services
         {
             var precioUnidad = pedido.PrecioUnidad;
             var precioDocena = pedido.PrecioDocena;
-            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c=>c.Cantidad).Sum();
+            var cantEmpanadas = pedido.InvitacionPedidoGustoEmpanadaUsuario.Select(c => c.Cantidad).Sum();
 
             int cantDocenas = cantEmpanadas / 12;
             int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
@@ -648,7 +693,7 @@ namespace TrabajoPracticoPw3.Services
 
             foreach (var invitacion in pedido.InvitacionPedido)
             {
-                int cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                int cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.IdUsuario == invitacion.IdUsuario).Select(i => i.Cantidad).Sum();
                 float precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
 
                 List<InfoGustosEmail> listaEmpanadas = new List<InfoGustosEmail>();
@@ -668,9 +713,9 @@ namespace TrabajoPracticoPw3.Services
                 {
                     Email = invitacion.Usuario.Email,
                     Precio = precioPerCapita,
-                    CantidadTotal= cantidadEmpanadaPerCapita,
+                    CantidadTotal = cantidadEmpanadaPerCapita,
                     Empanadas = listaEmpanadas
-                    
+
                 };
 
 

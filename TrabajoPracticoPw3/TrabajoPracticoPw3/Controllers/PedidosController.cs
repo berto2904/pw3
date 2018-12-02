@@ -110,9 +110,9 @@ namespace TrabajoPracticoPw3.Controllers
                 return RedirectToAction("Error", "Home");
             }
 
-            Pedido PedidoAEditar = ps.ObtenerPedidoPorId(id);
+            Pedido pedidoAEditar = ps.ObtenerPedidoPorId(id);
 
-            if (PedidoAEditar.EstadoPedido.Nombre == "Cerrado")
+            if (pedidoAEditar.EstadoPedido.Nombre == "Cerrado")
             {
                 TempData["mensaje"] = "El pedido se encuentra Cerrado";
                 //TODO: Crear pantalla detalle
@@ -120,9 +120,15 @@ namespace TrabajoPracticoPw3.Controllers
             }
 
             ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+
+            List<Usuario> ListaDeInvitados = ps.ObtenerTodosLosUsuariosInvitadosDesdeUnPedido(pedidoAEditar);
+
+            ViewBag.ListaDeInvitados = ps.QuitarUserActivoDeUnaListaDeUsuarios(ListaDeInvitados, usuarioLoguedado);
+
             ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
 
-            return View(PedidoAEditar);
+            return View(pedidoAEditar);
         }
 
         [HttpPost]
@@ -240,7 +246,7 @@ namespace TrabajoPracticoPw3.Controllers
             Pedido pedido = ps.ObtenerPedidoById(id);
 
             ViewBag.ListaDeGustos = ps.ObtenerGustoDeEmpanadasList();
-            ViewBag.ListaDeUsuarios = ps.ObtenerUsuarioList(usuarioLoguedado);
+            ViewBag.ListaDeUsuarios = ps.ObtenerTodosLosUsuariosInvitadosDesdeUnPedido(pedido);
 
             return View(pedido);
         }
