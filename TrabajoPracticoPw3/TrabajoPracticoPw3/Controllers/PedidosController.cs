@@ -26,7 +26,7 @@ namespace TrabajoPracticoPw3.Controllers
         {
             if (Session["usuario"] == null)
             {
-                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Iniciar/"});
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Iniciar/" });
             }
             //ViewBag.ListaDeGustos = new MultiSelectList(ps.ObtenerGustoDeEmpanadasList(), "IdGustoEmpanada", "Nombre");
             //ViewBag.ListaDeUsuarios = new MultiSelectList(ps.ObtenerUsuarioList(), "IdUsuario", "Email");
@@ -52,19 +52,19 @@ namespace TrabajoPracticoPw3.Controllers
         [HttpPost]
         public ActionResult Iniciar(FormCollection form)
         {
-            int idPedido = ps.IniciarService(form,usuarioLoguedado);
+            int idPedido = ps.IniciarService(form, usuarioLoguedado);
             if (idPedido != 0)
             {
                 TempData["mensaje"] = "El pedido se inició";
             }
-            return RedirectToAction("Iniciado", new {id = idPedido });
+            return RedirectToAction("Iniciado", new { id = idPedido });
         }
 
         public ActionResult Iniciar(int id)
         {
             if (Session["usuario"] == null)
             {
-                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Iniciar/"+id });
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Iniciar/" + id });
             }
             return View();
         }
@@ -80,7 +80,7 @@ namespace TrabajoPracticoPw3.Controllers
             {
                 TempData["mensaje"] = "Acceso invalido";
                 return RedirectToAction("Error", "Home");
-            }        
+            }
             ViewBag.Mensaje = TempData["mensaje"];
             return View(ps.ObtenerPedidoById(id));
         }
@@ -112,7 +112,7 @@ namespace TrabajoPracticoPw3.Controllers
 
             Pedido PedidoAEditar = ps.ObtenerPedidoPorId(id);
 
-            if (PedidoAEditar.EstadoPedido.Nombre=="Cerrado")
+            if (PedidoAEditar.EstadoPedido.Nombre == "Cerrado")
             {
                 TempData["mensaje"] = "El pedido se encuentra Cerrado";
                 //TODO: Crear pantalla detalle
@@ -129,22 +129,22 @@ namespace TrabajoPracticoPw3.Controllers
         public ActionResult Editar(FormCollection form)
         {
             int envioInvitacion = ps.ObtenerEnviarInvitacion(form);
-            
+
             //Pedido pedidoEditado = ps.ObtenerPedidoDesdeFormCollection(form);
 
             //Pedido pedidoAEditar = ps.ObtenerPedidoPorId(pedidoEditado.IdPedido);
 
-            List<Usuario> usuariosAEnviarInvitacion = ps.DeterminarEnviosDeInvitacionDesdeFormCollection(form);
-
-            Console.WriteLine(usuariosAEnviarInvitacion);
-
-            if(envioInvitacion == 0)
+            if (envioInvitacion == 1)
             {
                 // no se envia invitacion
             }
             else
             {
                 // se envia invitacion a usuariosAEnviarInvitacion
+                Pedido pedido = ps.ObtenerPedidoDesdeFormCollection(form);
+                List<Usuario> usuariosAEnviarInvitacion = ps.DeterminarEnviosDeInvitacionDesdeFormCollection(form);
+
+                ps.EnviarInvitacionesDesdeUnaListaDeUsuarios(usuariosAEnviarInvitacion, pedido);
             }
 
             ps.ActualizarValoresDeUnPedidoDesdeFormCollection(form);
@@ -165,22 +165,46 @@ namespace TrabajoPracticoPw3.Controllers
             return RedirectToAction("Lista");
         }
 
-       public ActionResult Elegir(int id)
+        public ActionResult Elegir(int id)
         {
             if (Session["usuario"] == null)
             {
-                return RedirectToAction("Login", "Home", new {redirigir = "/Pedidos/Elegir/"+id});
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/Elegir/" + id });
             }
             usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
             if (!ps.InvitacionPedidoUsuarioIsTrue(id, usuarioLoguedado))
             {
                 TempData["mensaje"] = "Acceso invalido";
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
             Pedido pedido = ps.ObtenerPedidoById(id);
             ViewBag.IdUsuario = usuarioLoguedado.IdUsuario;
             ViewBag.TokenInvitacion = pedido.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault().Token.ToString();
             return View(pedido);
+        }
+
+        public ActionResult ElegirToken(System.Guid id)
+        {
+            if (Session["usuario"] == null)
+            {
+                return RedirectToAction("Login", "Home", new { redirigir = "/Pedidos/ElegirToken/" + id });
+            }
+            usuarioLoguedado = ps.BuscarUsuarioById(Convert.ToInt32(Session["usuario"]));
+            //Guid token = Guid.Parse(tokn);
+            Pedido pedido = ps.ObtenerPedidoByToken(id);
+            if (!(usuarioLoguedado.IdUsuario == pedido.InvitacionPedido.Where(i=>i.Token == id).Select(u=>u.IdUsuario).FirstOrDefault()))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
+            if (!ps.InvitacionPedidoUsuarioIsTrue(pedido.IdPedido, usuarioLoguedado))
+            {
+                TempData["mensaje"] = "Acceso invalido";
+                return RedirectToAction("Error", "Home");
+            }
+            ViewBag.IdUsuario = usuarioLoguedado.IdUsuario;
+            ViewBag.TokenInvitacion = pedido.InvitacionPedido.Where(i => i.IdPedido == pedido.IdPedido && i.IdUsuario == usuarioLoguedado.IdUsuario).FirstOrDefault().Token.ToString();
+            return View("Elegir", pedido);
         }
 
         [HttpPost]

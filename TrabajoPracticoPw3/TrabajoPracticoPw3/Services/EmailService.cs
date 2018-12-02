@@ -16,7 +16,7 @@ namespace TrabajoPracticoPw3.Services
         {
                 MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
                 //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", pedidoAFinalizar.Usuario.Email);
-                email.Subject = "Detalle de Recaudacion de "+pedidoAFinalizar.Descripcion.ToString();
+                email.Subject = pedidoAFinalizar.Usuario.Email+" sos el responsable de este pedido: "+pedidoAFinalizar.NombreNegocio.ToString();
 
                 string listaInvitados = "";
                 string listaGustos = "";
@@ -58,13 +58,53 @@ namespace TrabajoPracticoPw3.Services
 
         }
 
+        public void EnviarEmailInvitados(Pedido pedidoAFinalizar, InfoEmailResponsable info)
+        {
+
+            foreach (var invitado in info.Invitados.Where(i=>i.Email != pedidoAFinalizar.Usuario.Email))
+            {
+                MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
+                //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", invitado.Email);
+                email.Subject = invitado.Email+" sos invitado del siguiente pedido: " + pedidoAFinalizar.NombreNegocio.ToString();
+                string gustosElegidos = "";
+
+                foreach (var empanada in invitado.Empanadas)
+                {
+                    string emp = empanada.Gusto + " : " + empanada.Cantidad + "<br>";
+                    gustosElegidos += emp;
+                }
+                
+
+                email.Body =    "<h2>Detalle de pedido</h2>" +
+                                "<div>" +
+                                "  <h3>Gustos Elegidos:</h3>" +
+                                "  <div>" +
+                                gustosElegidos+
+                                "  </div>" +
+                                "</div>" +
+                                "<br>" +
+                                "<div >" +
+                                "  <h3>Cantidad de Empanadas: "+ invitado.CantidadTotal + " </h3>" +
+                                "</div>"+
+                                "<div >" +
+                                "  <h3>Precio a abonar: $"+invitado.Precio+"</h3>" +
+                                "</div>";
+
+                email.IsBodyHtml = true;
+                SmtpClient smtp = new SmtpClient();
+                smtp.Send(email);
+
+
+            }
+        }
+
         public void EnviarEmailInvitados(InvitacionPedido invitacion)
         {
                 MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
                 //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", invitacion.Usuario.Email);
 
                 email.Subject = "Te invitó "+ invitacion.Pedido.Usuario.Email+" para pedir empanadas";
-                email.Body = "Has sido invitado para realizar un pedido de empanadas http://localhost:50846/pedidos/elegir/" + invitacion.Token;
+                email.Body = "Has sido invitado para realizar un pedido de empanadas http://localhost:50846/Pedidos/ElegirToken/" + invitacion.Token;
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(email);
 

@@ -147,6 +147,25 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+        public void EnviarInvitacionesDesdeUnaListaDeUsuarios(List<Usuario> usuariosAEnviarInvitacion, Pedido pedido)
+        {
+            foreach (Usuario invitado in usuariosAEnviarInvitacion)
+            {
+                Usuario usuarioEncontrado = ctx.Usuario.SingleOrDefault(x => x.IdUsuario == invitado.IdUsuario);
+                Pedido pedidoEncontrado = ctx.Pedido.SingleOrDefault(p => p.IdPedido == pedido.IdPedido);
+                InvitacionPedido invitacionPedido = new InvitacionPedido
+                {
+                    Pedido = pedidoEncontrado,
+                    Usuario = usuarioEncontrado,
+                    Token = new Guid(new Md5Hash().GetMD5((usuarioEncontrado.Email + pedidoEncontrado.FechaCreacion))),
+                    Completado = false,
+                };
+                ctx.InvitacionPedido.Add(invitacionPedido);
+                ctx.SaveChanges();
+                es.EnviarEmailInvitados(invitacionPedido);
+            }
+        }
+
         public int ElegirService(FormCollection form, Usuario usuarioLoguedado)
         {
             Pedido pedido = ObtenerPedidoById(int.Parse(form["idPedido"]));
@@ -198,13 +217,19 @@ namespace TrabajoPracticoPw3.Services
             return pedido.IdPedido;
         }
 
+        public Pedido ObtenerPedidoByToken(Guid token)
+        {
+            Pedido pedido = ctx.InvitacionPedido.Where(i => i.Token == token).Select(p => p.Pedido).FirstOrDefault();
+            return pedido;
+        }
+
         //TODO: Elegir service por json
         public MensajeJson ElegirServiceByJson(InvitacionGustoJson invitacionJson)
         {
             MensajeJson msjJson = new MensajeJson();
             try
             {
-            Pedido pedido = ObtenerPedidoById(ctx.InvitacionPedido.Where(t => t.Token == invitacionJson.Token && t.IdUsuario == invitacionJson.IdUsuario).FirstOrDefault().IdPedido);
+                Pedido pedido = ObtenerPedidoById(ctx.InvitacionPedido.Where(t => t.Token == invitacionJson.Token && t.IdUsuario == invitacionJson.IdUsuario).FirstOrDefault().IdPedido);
 
                 foreach (var gustoSolicitados in invitacionJson.GustosEmpanadasCantidad)
                 {
@@ -281,7 +306,7 @@ namespace TrabajoPracticoPw3.Services
                 return msjJson;
 
             }
-            
+
         }
         //------------------------------Queries------------------------------
 
@@ -393,27 +418,27 @@ namespace TrabajoPracticoPw3.Services
         {
             List<Usuario> usuariosAInvitar = new List<Usuario>();
 
+            List<Usuario> usuariosListados = new List<Usuario>();
+
             Pedido pedidoAEditar = ObtenerPedidoPorId(int.Parse(form["IdPedido"]));
 
-            foreach (Usuario usuario in form)
+            int[] invitados = Array.ConvertAll(form.GetValues("invitados"), int.Parse);
+
+            foreach (var usuario in invitados)
             {
-                if (pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario.Count() == 0)
+                Usuario usuarioBuscado = BuscarUsuarioById(usuario);
+                usuariosListados.Add(usuarioBuscado);
+            }
+
+            foreach (Usuario usuario in usuariosListados)
+            {
+                if (usuario.InvitacionPedido.Where(u => u.IdPedido == pedidoAEditar.IdPedido).Select(i => i.Completado).FirstOrDefault() == true)
                 {
-                    usuariosAInvitar.Add(usuario);
+
                 }
                 else
                 {
-                    foreach (InvitacionPedidoGustoEmpanadaUsuario invitacionPedidoGustoEmpanadaUsuario in pedidoAEditar.InvitacionPedidoGustoEmpanadaUsuario)
-                    {
-                        if (usuario.IdUsuario == invitacionPedidoGustoEmpanadaUsuario.IdUsuario)
-                        {
-                            break;
-                        }
-                        else
-                        {
-                            usuariosAInvitar.Add(usuario);
-                        }
-                    }
+                    usuariosAInvitar.Add(usuario);
                 }
             }
 
@@ -430,9 +455,6 @@ namespace TrabajoPracticoPw3.Services
                 PrecioUnidad = int.Parse(form["PrecioUnidad"]),
                 PrecioDocena = int.Parse(form["PrecioDocena"]),
                 FechaCreacion = DateTime.Now,
-                //IdUsuarioResponsable = usuarioLogueado.IdUsuario,
-                //EstadoPedido = ctx.EstadoPedido.SingleOrDefault(x => x.Nombre == "Abierto")
-                //EstadoPedido = ctx.EstadoPedido.Where(x => x.Nombre == "Abierto").FirstOrDefault(),
             };
             return pedidoEditado;
         }
@@ -489,7 +511,6 @@ namespace TrabajoPracticoPw3.Services
                 foreach (InvitacionPedido invitacionPedido in invitaciones)
                 {
                     if (usuario.IdUsuario == invitacionPedido.IdUsuario)
-                    ///if (usuario.InvitacionPedido.Contains(invitacionPedido))
                     {
                         break;
                     }
@@ -604,6 +625,7 @@ namespace TrabajoPracticoPw3.Services
         {
             InfoEmailResponsable infoResponsable = CalcularPedidoResponsable(pedidoAFinalizar);
             es.EnviarEmailResponsable(pedidoAFinalizar, infoResponsable);
+            es.EnviarEmailInvitados(pedidoAFinalizar, infoResponsable);
         }
 
         public InfoEmailResponsable CalcularPedidoResponsable(Pedido pedido)
@@ -615,25 +637,40 @@ namespace TrabajoPracticoPw3.Services
             int cantDocenas = cantEmpanadas / 12;
             int cantEmpanadasSingulares = cantEmpanadas - (cantDocenas * 12);
 
-            var precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
-            var precioTotalDocena = cantDocenas * precioDocena;
+            float precioTotalEmpanadasSingulares = cantEmpanadasSingulares * precioUnidad;
+            float precioTotalDocena = cantDocenas * precioDocena;
 
-            var precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
-            var precioPorEmpanada = precioTotal / cantEmpanadas;
+            float precioTotal = precioTotalEmpanadasSingulares + precioTotalDocena;
+            float precioPorEmpanada = precioTotal / cantEmpanadas;
 
             List<InfoInvitadoEmail> listaInvitados = new List<InfoInvitadoEmail>();
             List<InfoGustosEmail> listaGustos = new List<InfoGustosEmail>();
 
             foreach (var invitacion in pedido.InvitacionPedido)
             {
-                var cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
-                var precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
+                int cantidadEmpanadaPerCapita = invitacion.Pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i=>i.IdUsuario == invitacion.IdUsuario).Select(i=>i.Cantidad).Sum();
+                float precioPerCapita = precioPorEmpanada * cantidadEmpanadaPerCapita;
 
+                List<InfoGustosEmail> listaEmpanadas = new List<InfoGustosEmail>();
+
+                foreach (var gusto in pedido.GustoEmpanada)
+                {
+                    var cantidadEmpanadaPorGusto = pedido.InvitacionPedidoGustoEmpanadaUsuario.Where(i => i.GustoEmpanada.IdGustoEmpanada == gusto.IdGustoEmpanada && i.IdUsuario == invitacion.IdUsuario).Select(i => i.Cantidad).FirstOrDefault();
+                    InfoGustosEmail empanada = new InfoGustosEmail
+                    {
+                        Gusto = gusto.Nombre,
+                        Cantidad = cantidadEmpanadaPorGusto
+                    };
+                    listaEmpanadas.Add(empanada);
+                }
 
                 InfoInvitadoEmail infoEmailResponsable = new InfoInvitadoEmail
                 {
                     Email = invitacion.Usuario.Email,
-                    Precio = precioPerCapita
+                    Precio = precioPerCapita,
+                    CantidadTotal= cantidadEmpanadaPerCapita,
+                    Empanadas = listaEmpanadas
+                    
                 };
 
 
