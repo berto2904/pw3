@@ -14,9 +14,9 @@ namespace TrabajoPracticoPw3.Services
 
         public void EnviarEmailResponsable(Pedido pedidoAFinalizar, InfoEmailResponsable info)
         {
-                MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
-                //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", pedidoAFinalizar.Usuario.Email);
-                email.Subject = pedidoAFinalizar.Usuario.Email+" sos el responsable de este pedido: "+pedidoAFinalizar.NombreNegocio.ToString();
+            //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
+            MailMessage email = new MailMessage("3empanadaspw3@gmail.com", pedidoAFinalizar.Usuario.Email);
+            email.Subject = pedidoAFinalizar.Usuario.Email+" sos el responsable de este pedido: "+pedidoAFinalizar.NombreNegocio.ToString();
 
                 string listaInvitados = "";
                 string listaGustos = "";
@@ -34,9 +34,7 @@ namespace TrabajoPracticoPw3.Services
                 }
                 
                 email.Body =    "<h2>Precio Total: $"+info.PrecioTotal.ToString()+"</h2>" +
-                            //"<br>" +
                             "<h2>Detalle Recaudacion:</h2>" +
-                            //"<br>" +
                             "<div>" +
                             "  <h3>Invitados:</h3>" +
                             "  <div>" +
@@ -63,8 +61,8 @@ namespace TrabajoPracticoPw3.Services
 
             foreach (var invitado in info.Invitados.Where(i=>i.Email != pedidoAFinalizar.Usuario.Email))
             {
-                MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
-                //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", invitado.Email);
+                //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
+                MailMessage email = new MailMessage("3empanadaspw3@gmail.com", invitado.Email);
                 email.Subject = invitado.Email+" sos invitado del siguiente pedido: " + pedidoAFinalizar.NombreNegocio.ToString();
                 string gustosElegidos = "";
 
@@ -100,37 +98,15 @@ namespace TrabajoPracticoPw3.Services
 
         public void EnviarEmailInvitados(InvitacionPedido invitacion)
         {
-                MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
-                //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", invitacion.Usuario.Email);
+                //MailMessage email = new MailMessage("3empanadaspw3@gmail.com", "berto2904@gmail.com");
+            MailMessage email = new MailMessage("3empanadaspw3@gmail.com", invitacion.Usuario.Email);
 
-                email.Subject = "Te invitó "+ invitacion.Pedido.Usuario.Email+" para pedir empanadas";
+            email.Subject = "Te invitó "+ invitacion.Pedido.Usuario.Email+" para pedir empanadas";
                 email.Body = "Has sido invitado para realizar un pedido de empanadas http://localhost:50846/Pedidos/ElegirToken/" + invitacion.Token;
                 SmtpClient smtp = new SmtpClient();
                 smtp.Send(email);
 
 
-        }
-
-        public void EnviarEmailPrueba(String mensaje)
-        {
-            MailMessage email = new MailMessage("3empanadaspw3@gmail.com","berto2904@gmail.com");
-            email.Subject = "Asunto de prueba";
-            email.Body = "Prueba de contenido";
-
-            SmtpClient smtp = new SmtpClient();
-            smtp.Send(email);
-
-            //try
-            //{
-            //    email.Dispose();
-            //    output = "Corre electrónico fue enviado satisfactoriamente.";
-            //}
-            //catch (Exception ex)
-            //{
-            //    output = "Error enviando correo electrónico: " + ex.Message;
-            //}
-
-            //Console.WriteLine(output);
         }
     }
 }
